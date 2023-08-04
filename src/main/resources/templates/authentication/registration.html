@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>User Registration</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/styles.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 <body>
 <div class="container">
@@ -23,6 +23,7 @@
 
         <label for="birth">Birthday:</label>
         <input type="date" id="birth" name="birth" required><br>
+        <button type="button" onclick="getLocation()">Отримати геолокацію</button>
 
         <label for="role">Role:</label>
         <select id="role" name="role" required>
@@ -40,6 +41,24 @@
 
         <button type="submit">Register</button>
     </form>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Геолокація не підтримується вашим браузером.");
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+        }
+    </script>
 </div>
 </body>
 </html>
