@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
+    <title>User Registration</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/styles.css" />
 </head>
 <body>
+<div class="container">
+    <h2>User Registration</h2>
+    <form th:action="@{/auth/register}" method="post" th:object="${user}">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" required><br>
 
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required><br>
+
+        <label for="birth">Birthday:</label>
+        <input type="date" id="birth" name="birth" required><br>
+
+        <label for="role">Role:</label>
+        <select id="role" name="role" required>
+            <option value="ADMIN">Admin</option>
+            <option value="USER">User</option>
+            <option value="DELIVERY_MAN">Delivery Man</option>
+            <option value="MANUFACTURER">Manufacturer</option>
+        </select><br>
+
+        <label for="geolocationX">Geolocation X:</label>
+        <input type="number" id="geolocationX" name="geolocationX" required><br>
+
+        <label for="geolocationY">Geolocation Y:</label>
+        <input type="number" id="geolocationY" name="geolocationY" required><br>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
 </body>
 </html>

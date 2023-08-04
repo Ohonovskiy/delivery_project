@@ -4,6 +4,8 @@ import application.pet.delivery.enums.Role;
 import application.pet.delivery.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -29,13 +31,14 @@ public class User {
     @Column(name = "user_password")
     private String password;
     @Column(name = "user_birthday_date")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date birthdayDate;
     @Column(name = "user_role")
     @Enumerated(value = EnumType.STRING)
     private Role role;
     @Column(name = "user_status")
     @Enumerated(value = EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
     @Column(name = "user_geolocation_x")
     private int geolocationX;
     @Column(name = "user_geolocation_y")
