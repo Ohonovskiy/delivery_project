@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>User Registration</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
-<body>
+
+<style>
+
+</style>
+
+<body onload="getLocation()">
 <div class="container">
     <h2>User Registration</h2>
     <form th:action="@{/auth/register}" method="post" th:object="${user}">
@@ -23,42 +28,60 @@
 
         <label for="birth">Birthday:</label>
         <input type="date" id="birth" name="birth" required><br>
-        <button type="button" onclick="getLocation()">Отримати геолокацію</button>
+
+        <div class="checkbox-container">
+            <label for="locationCheckbox">Geolocation permission:</label>
+            <input type="checkbox" id="locationCheckbox" th:checked="true" onclick="blurButton()">
+        </div>
+
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
 
         <label for="role">Role:</label>
         <select id="role" name="role" required>
-            <option value="ADMIN">Admin</option>
-            <option value="USER">User</option>
-            <option value="DELIVERY_MAN">Delivery Man</option>
-            <option value="MANUFACTURER">Manufacturer</option>
+            <option value="ROLE_ADMIN">Admin</option>
+            <option value="ROLE_USER">User</option>
+            <option value="ROLE_DELIVERY_MAN">Delivery Man</option>
+            <option value="ROLE_MANUFACTURER">Manufacturer</option>
         </select><br>
 
-        <label for="geolocationX">Geolocation X:</label>
-        <input type="number" id="geolocationX" name="geolocationX" required><br>
+        <div class="buttonLabel">
+            <label for="submitButton" hidden="hidden" id="submitButtonLabel">Please check geolocation permission first</label>
+        </div>
+        <button type="submit" id="submitButton">Register</button>
 
-        <label for="geolocationY">Geolocation Y:</label>
-        <input type="number" id="geolocationY" name="geolocationY" required><br>
 
-        <button type="submit">Register</button>
     </form>
 
     <script>
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
+                navigator.geolocation.getCurrentPosition(({coords}) => {
+                    document.getElementById("latitude").value = coords.latitude;
+                    document.getElementById("longitude").value = coords.longitude;
+                });
             } else {
                 alert("Геолокація не підтримується вашим браузером.");
             }
         }
+    </script>
 
-        function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
 
-            document.getElementById("latitude").value = latitude;
-            document.getElementById("longitude").value = longitude;
+    <script>
+        function blurButton(){
+            const checkBox = document.getElementById("locationCheckbox");
+            const button = document.getElementById("submitButton");
+            const label = document.getElementById("submitButtonLabel");
+            if(!checkBox.checked) {
+                button.hidden = true;
+                label.hidden = false;
+            } else {
+                button.hidden = false;
+                label.hidden = true;
+            }
         }
     </script>
+
 </div>
 </body>
 </html>

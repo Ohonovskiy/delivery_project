@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Comparable<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -40,10 +40,10 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.ACTIVE;
     @Column(name = "user_geolocation_x")
-    private int geolocationX;
+    private Double geolocationX;
     @Column(name = "user_geolocation_y")
-    private int geolocationY;
-    @ManyToMany(cascade = CascadeType.ALL)
+    private Double geolocationY;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_product",
             joinColumns = @JoinColumn(name = "user_id_fk"),
@@ -66,5 +66,11 @@ public class User {
 
     public void removeAllProductsFromCart(){
         products.clear();
+    }
+
+
+    @Override
+    public int compareTo(User user) {
+        return this.getId().compareTo(user.getId());
     }
 }

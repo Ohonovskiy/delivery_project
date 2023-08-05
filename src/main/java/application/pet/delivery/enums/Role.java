@@ -6,10 +6,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
-    ADMIN(Set.of(Permission.DEVELOPERS_WRITE, Permission.DEVELOPERS_DELETE)),
-    USER(Set.of(Permission.USER_PLACE_ORDER, Permission.USER_CANCEL_ORDER)),
-    DELIVERY_MAN(Set.of(Permission.DELIVERY_MAN_TAKE_ORDER, Permission.DELIVERY_MAN_CANCEL_ORDER)),
-    SHOP(Set.of(Permission.SHOP_ADD, Permission.SHOP_REMOVE));
+    ROLE_ADMIN(Set.of(
+            Permission.DEVELOPERS_WRITE,
+            Permission.DEVELOPERS_DELETE,
+            Permission.DEVELOPERS_BAN,
+            Permission.DEVELOPERS_ADMIN_PAGE)),
+    ROLE_USER(Set.of(Permission.USER_PLACE_ORDER, Permission.USER_CANCEL_ORDER)),
+    ROLE_DELIVERY_MAN(Set.of(Permission.DELIVERY_MAN_TAKE_ORDER, Permission.DELIVERY_MAN_CANCEL_ORDER)),
+    ROLE_SHOP(Set.of(Permission.SHOP_ADD, Permission.SHOP_REMOVE));
 
     private final Set<Permission> permissions;
 

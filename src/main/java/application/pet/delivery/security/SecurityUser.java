@@ -1,24 +1,27 @@
 package application.pet.delivery.security;
 
 import application.pet.delivery.entities.User;
+import application.pet.delivery.enums.Role;
 import application.pet.delivery.enums.Status;
+import application.pet.delivery.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class SecurityUser implements UserDetails {
-    private final String username;
+    private final String email;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
     private final boolean isActive;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,7 +35,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return isActive;
     }
 
     @Override
@@ -56,13 +59,14 @@ public class SecurityUser implements UserDetails {
     }
 
     public static UserDetails fromUser(User user){
+        boolean isActive = user.getStatus().equals(Status.ACTIVE);
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
+                isActive,
+                isActive,
+                isActive,
+                isActive,
                 user.getRole().getAuthorities()
         );
     }

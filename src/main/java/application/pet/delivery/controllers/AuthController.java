@@ -15,12 +15,10 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/registration")
@@ -33,10 +31,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user,
-                               @ModelAttribute("birth") String birth) throws ParseException {
+                               @ModelAttribute("birth") String birth,
+                               @RequestParam("latitude") Double latitude,
+                               @RequestParam("longitude") Double longitude) throws ParseException {
 
         user.setBirthdayDate(new SimpleDateFormat("yyyy-MM-dd").parse(birth));
-        //userService.save(user);
+        user.setGeolocationX(longitude);
+        user.setGeolocationY(latitude);
+
+        userService.save(user);
+
         return "redirect:/auth/success";
     }
 
@@ -50,17 +54,9 @@ public class AuthController {
         return "authentication/success";
     }
 
-    @GetMapping("/testGeo")
-    public String test(){
-        return "authentication/testGeo";
-    }
-
-    @PostMapping("/geo")
-    public String test2(@RequestParam("latitude") Double latitude,
-                        @RequestParam("longitude") Double longitude){
-        System.out.println(latitude);
-        System.out.println(longitude);
-        return "authentication/testGeo";
+    @GetMapping("/logout")
+    public String logout(){
+        return "authentication/logout";
     }
 
 }

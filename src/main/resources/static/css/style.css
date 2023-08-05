@@ -54,13 +54,20 @@ button:hover {
     background-color: #45a049;
 }
 
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.buttonLabel {
+    align-items: center;
+}
+
 input[type="date"] {
-    /* Remove default arrow on date input */
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    /* Add custom arrow */
-    /*background-image: url('calendar-icon.png');*/
     background-size: 18px 18px;
     background-repeat: no-repeat;
     background-position: right center;

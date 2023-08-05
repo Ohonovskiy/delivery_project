@@ -1,12 +1,15 @@
 package application.pet.delivery.services;
 
 import application.pet.delivery.entities.User;
+import application.pet.delivery.enums.Role;
 import application.pet.delivery.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,8 +47,14 @@ public class UserService {
         return repository.findByEmail(email);
     }
 
+    @Transactional(readOnly = true)
+    public List<User> getAll(){
+        List<User> users = repository.findAll();
+        Collections.sort(users);
+        return users;
+    }
+
     public void deleteAll(){
         repository.deleteAll();
     }
-
 }

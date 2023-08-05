@@ -1,7 +1,7 @@
 package application.pet.delivery.config.security;
 
+import application.pet.delivery.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,24 +17,26 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity()
+@EnableMethodSecurity
 public class SpringConfig {
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public SpringConfig(@Qualifier("UserDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public SpringConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth ->
-                        auth.anyRequest().permitAll())
+                        auth.anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form.loginPage("/auth/login")
                         .permitAll()
-                        .defaultSuccessUrl("/auth/success"))
+                        .defaultSuccessUrl("/auth/success")
+                        .failureUrl("/auth/login?error=true"))
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
                         .invalidateHttpSession(true)
@@ -43,7 +44,6 @@ public class SpringConfig {
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/auth/login"))
                 .authenticationProvider(daoAuthenticationProvider())
-                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
