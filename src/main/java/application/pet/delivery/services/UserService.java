@@ -1,7 +1,7 @@
 package application.pet.delivery.services;
 
 import application.pet.delivery.entities.User;
-import application.pet.delivery.enums.Role;
+import application.pet.delivery.enums.Status;
 import application.pet.delivery.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,7 +54,27 @@ public class UserService {
         return users;
     }
 
-    public void deleteAll(){
+    public void removeAll(){
         repository.deleteAll();
+    }
+
+    public void ban(User user){
+        user.setStatus(Status.BANNED);
+        save(user);
+    }
+    public void ban(Long id){
+        User user = getById(id);
+        user.setStatus(Status.BANNED);
+        save(user);
+    }
+    public void unban(User user){
+        user.setStatus(Status.ACTIVE);
+        save(user);
+    }
+
+    public void unban(Long id){
+        User user = getById(id);
+        user.setStatus(Status.ACTIVE);
+        save(user);
     }
 }

@@ -9,13 +9,39 @@
     <tr>
         <th>ID</th>
         <th>First Name</th>
+        <th>Last Name</th>
         <th>Email</th>
+        <th>Actions</th>
     </tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.getId()}"></td>
         <td th:text="${user.getFirstName()}"></td>
+        <td th:text="${user.getLastName()}"></td>
         <td th:text="${user.getEmail()}"></td>
+        <td>
+                    <!-- If user in list is not current user add button Ban user if not banned already -->
+            <span th:if="${user.getId() != currentUser.get().getId() and user.getStatus() != statusBanned}">
+                <form method="post" th:action="@{/admin/users/ban}">
+                    <input type="hidden" name="id" th:value="${user.getId()}">
+                    <button type="submit">Ban user</button>
+                </form>
+            </span>
+
+            <!-- If user banned add button unban /-->
+            <span th:if="${user.getStatus() == statusBanned}">
+                <form method="post" th:action="@{/admin/users/unban}">
+                    <input type="hidden" name="id" th:value="${user.getId()}">
+                    <button type="submit">unban user</button>
+                </form>
+            </span>
+        </td>
     </tr>
 </table>
+
+<script>
+    function youCannotBanYourSelfFunction(){
+        alert("You cannot ban yourself!")
+    }
+</script>
 </body>
 </html>
