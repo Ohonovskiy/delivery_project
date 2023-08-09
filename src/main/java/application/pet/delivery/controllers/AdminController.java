@@ -15,17 +15,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
+/**
+ * Controller class responsible for handling administrative actions related to user management and privileges.
+ */
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('developers:admin_page')")
 public class AdminController {
     private final UserService userService;
 
+    /**
+     * Constructs a new instance of AdminController with the provided user service.
+     *
+     * @param userService An instance of the UserService for managing user-related operations.
+     */
     @Autowired
     public AdminController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Retrieves a list of users and related information for display in the admin users page.
+     *
+     * @param model The Model instance to add attributes for rendering in the view.
+     * @return The name of the view template for the admin users page.
+     */
     @GetMapping("/users")
     public String users(Model model){
         Optional<User> currentUser = userService
@@ -41,6 +55,12 @@ public class AdminController {
         return "admin/users";
     }
 
+    /**
+     * Bans a user based on the provided user ID.
+     *
+     * @param id The ID of the user to be banned.
+     * @return A redirect URL to the admin users page after performing the ban operation.
+     */
     @PostMapping("/users/ban")
     public String banUser(@ModelAttribute("id") Long id){
         userService.ban(id);
@@ -48,6 +68,12 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    /**
+     * Unbans a previously banned user based on the provided user ID.
+     *
+     * @param id The ID of the user to be unbanned.
+     * @return A redirect URL to the admin users page after performing the unban operation.
+     */
     @PostMapping("/users/unban")
     public String unbanUser(@ModelAttribute("id") Long id){
         userService.unban(id);
