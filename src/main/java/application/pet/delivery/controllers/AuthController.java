@@ -45,19 +45,19 @@ public class AuthController {
      * Handles the registration of a new user.
      *
      * @param user     The User object containing registration information.
-     * @param birth    The birth date string in "yyyy-MM-dd" format.
+     * @param birthdayDate    The birthdayDate string in "yyyy-MM-dd" format.
      * @param latitude The latitude value for user geolocation.
      * @param longitude The longitude value for user geolocation.
      * @return A redirect URL to the registration success page after successful registration.
-     * @throws ParseException if there is an error parsing the birth date string.
+     * @throws ParseException if there is an error parsing the birthdayDate string.
      */
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user,
-                               @ModelAttribute("birth") String birth,
+                               @ModelAttribute("birth") String birthdayDate,
                                @RequestParam("latitude") Double latitude,
                                @RequestParam("longitude") Double longitude) throws ParseException {
 
-        user.setBirthdayDate(new SimpleDateFormat("yyyy-MM-dd").parse(birth));
+        user.setBirthdayDate(new SimpleDateFormat("yyyy-MM-dd").parse(birthdayDate));
         user.setGeolocationX(longitude);
         user.setGeolocationY(latitude);
 
@@ -77,13 +77,13 @@ public class AuthController {
     }
 
     /**
-     * Displays the success page after successful registration or login.
+     * Displays the success page after successful registration.
      *
-     * @return The name of the view template for the registration/login success page.
+     * @return The name of the view template for the registration success page.
      */
     @GetMapping("/success")
     public String success(){
-        return "authentication/success";
+        return "authentication/registerMsg";
     }
 
     /**

@@ -1,5 +1,7 @@
 package application.pet.delivery.controllers;
 
+import application.pet.delivery.DTO.UserDTO;
+import application.pet.delivery.entities.User;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Controller class responsible for handling the index page and displaying user information.
  */
 @Controller
-@PreAuthorize("permitAll()")
+@PreAuthorize("isAuthenticated()")
 public class IndexController {
     private final UserService userService;
 
@@ -34,11 +36,16 @@ public class IndexController {
      * @return The name of the view template for the index page.
      */
     @GetMapping
-    public String whoAmI(Model model){
+    public String index(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("name", authentication.getName());
-        model.addAttribute("role", userService.getByEmail(
-                authentication.getName()).get().getRole());
+
+        UserDTO user;
+
+        if(userService.getByEmail(authentication.getName()).isPresent()) {
+            user = userService.convertToDTO(userService.getByEmail(authentication.getName()).get());
+
+            model.addAttribute("name", user.getFirstName());
+        }
 
         return "index/index";
     }

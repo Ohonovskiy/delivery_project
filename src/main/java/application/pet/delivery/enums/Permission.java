@@ -55,6 +55,11 @@ public enum Permission {
     USER_CANCEL_ORDER("user:cancel_order"),
 
     /**
+    * Add product to cart permission for users.
+    */
+    USER_ADD_TO_CART("user:add_to_cart"),
+
+    /**
      * Take an order permission for delivery men.
      */
     DELIVERY_MAN_TAKE_ORDER("delivery_man:take_order"),
