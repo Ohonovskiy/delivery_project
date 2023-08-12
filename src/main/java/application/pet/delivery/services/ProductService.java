@@ -1,5 +1,6 @@
 package application.pet.delivery.services;
 
+import application.pet.delivery.DTO.ProductDTO;
 import application.pet.delivery.entities.Product;
 import application.pet.delivery.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,22 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Product getById(Long id){
         return repository.getReferenceById(id);
+    }
+
+    /**
+     * Converts a Product entity to a ProductDTO.
+     *
+     * @param product The Product entity to be converted.
+     * @return A ProductDTO representing the Product entity.
+     */
+    public static ProductDTO convertToDTO(Product product){
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(product.getId());
+        productDTO.setName(product.getName());
+        productDTO.setPrice(product.getPrice());
+        productDTO.setExpireDate(product.getExpireDate());
+        productDTO.setManufacturerDTO(ManufacturerService.convertManufacturerToDTO(product.getManufacturer()));
+
+        return productDTO;
     }
 }

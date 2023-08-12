@@ -1,10 +1,7 @@
 package application.pet.delivery.services;
 
-import application.pet.delivery.DTO.ManufacturerDTO;
 import application.pet.delivery.DTO.ProductDTO;
 import application.pet.delivery.DTO.UserDTO;
-import application.pet.delivery.entities.Manufacturer;
-import application.pet.delivery.entities.Product;
 import application.pet.delivery.entities.User;
 import application.pet.delivery.enums.Status;
 import application.pet.delivery.repositories.UserRepository;
@@ -162,41 +159,10 @@ public class UserService {
         userDTO.setStatus(user.getStatus());
 
         List<ProductDTO> productDTOs = user.getProducts().stream()
-                .map(this::convertToDTO)
+                .map(ProductService::convertToDTO)
                 .collect(Collectors.toList());
         userDTO.setProducts(productDTOs);
 
         return userDTO;
-    }
-
-    /**
-     * Converts a Product entity to a ProductDTO.
-     *
-     * @param product The Product entity to be converted.
-     * @return A ProductDTO representing the Product entity.
-     */
-    public ProductDTO convertToDTO(Product product){
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
-        productDTO.setName(product.getName());
-        productDTO.setPrice(product.getPrice());
-        productDTO.setExpireDate(product.getExpireDate());
-        productDTO.setManufacturerDTO(convertManufacturerToDTO(product.getManufacturer()));
-
-        return productDTO;
-    }
-
-    /**
-     * Converts a Manufacturer entity to a ManufacturerDTO.
-     *
-     * @param manufacturer The Manufacturer entity to be converted.
-     * @return A ManufacturerDTO representing the Manufacturer entity.
-     */
-    public ManufacturerDTO convertManufacturerToDTO(Manufacturer manufacturer) {
-        ManufacturerDTO manufacturerDTO = new ManufacturerDTO();
-        manufacturerDTO.setId(manufacturer.getId());
-        manufacturerDTO.setName(manufacturer.getName());
-
-        return manufacturerDTO;
     }
 }

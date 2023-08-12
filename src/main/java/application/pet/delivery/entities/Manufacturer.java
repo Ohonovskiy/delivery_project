@@ -40,5 +40,4 @@ public class Manufacturer {
      */
     @OneToMany(mappedBy = "manufacturer")
     private List<Product> products;
-
 }

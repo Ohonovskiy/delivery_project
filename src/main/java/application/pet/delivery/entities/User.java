@@ -2,7 +2,6 @@ package application.pet.delivery.entities;
 
 import application.pet.delivery.enums.Role;
 import application.pet.delivery.enums.Status;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -89,7 +88,6 @@ public class User implements Comparable<User> {
     /**
      * The list of products associated with the user's cart.
      */
-//    @JsonIgnoreProperties("users")
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_product",
@@ -104,8 +102,10 @@ public class User implements Comparable<User> {
      * @param product The product to be added to the cart.
      */
     public void addProductToCart(Product product){
-        if(!products.contains(product))
+        if(!products.contains(product)){
             products.add(product);
+            product.getUsers().add(this);
+        }
     }
 
     /**
@@ -115,6 +115,7 @@ public class User implements Comparable<User> {
      */
     public void removeProductFromCart(Product product){
         products.remove(product);
+        product.getUsers().remove(this);
     }
 
     /**
@@ -123,6 +124,11 @@ public class User implements Comparable<User> {
      * @param id The ID of the product to be removed from the cart.
      */
     public void removeProductFromCart(int id){
+        products.stream()
+                .filter(product -> product.getId() == id)
+                .findFirst()
+                .ifPresent(product -> product.getUsers().remove(this));
+
         products.removeIf(product -> product.getId() == id);
     }
 
@@ -130,6 +136,7 @@ public class User implements Comparable<User> {
      * Removes all products from the user's cart.
      */
     public void removeAllProductsFromCart(){
+        products.forEach(product -> product.getUsers().remove(this));
         products.clear();
     }
 

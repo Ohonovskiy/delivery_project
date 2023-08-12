@@ -3,7 +3,6 @@ package application.pet.delivery.entities;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.lang.NonNull;
 
 import java.util.Date;
 import java.util.List;
@@ -57,8 +56,9 @@ public class Product {
      * The manufacturer associated with the product.
      */
     @ManyToOne
-    @JoinColumn(name = "product_manufacturer_id")
+    @JoinColumn(name = "manufacturer_id_fk")
     @NonNull
+    @ToString.Exclude
     private Manufacturer manufacturer;
 
     /**
@@ -66,5 +66,11 @@ public class Product {
      */
     @ManyToMany(mappedBy = "products")
     @Setter(AccessLevel.NONE)
+    @ToString.Exclude
     private List<User> users;
+
+    @ManyToMany(mappedBy = "products")
+    @Setter(AccessLevel.NONE)
+    @ToString.Exclude
+    private List<Shop> shops;
 }
