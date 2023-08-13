@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,12 @@ public class Product {
     private Integer quantity;
 
     /**
+     * The description of the product.
+     */
+    @Column(name = "product_description")
+    private String description;
+
+    /**
      * The manufacturer associated with the product.
      */
     @ManyToOne
@@ -67,10 +74,13 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
+    /**
+     * The list of shops associated with product.
+     */
     @ManyToMany(mappedBy = "products")
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
-    private List<Shop> shops;
+    private List<Shop> shops = new ArrayList<>();
 }

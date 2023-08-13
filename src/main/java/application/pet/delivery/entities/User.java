@@ -123,13 +123,13 @@ public class User implements Comparable<User> {
      *
      * @param id The ID of the product to be removed from the cart.
      */
-    public void removeProductFromCart(int id){
+    public void removeProductFromCart(Long id){
         products.stream()
-                .filter(product -> product.getId() == id)
+                .filter(product -> product.getId().equals(id))
                 .findFirst()
                 .ifPresent(product -> product.getUsers().remove(this));
 
-        products.removeIf(product -> product.getId() == id);
+        products.removeIf(product -> product.getId().equals(id));
     }
 
     /**
@@ -140,7 +140,9 @@ public class User implements Comparable<User> {
         products.clear();
     }
 
-
+    /**
+     * Compares users based on their ID.
+     */
     @Override
     public int compareTo(User user) {
         return this.getId().compareTo(user.getId());

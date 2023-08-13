@@ -1,7 +1,6 @@
 package application.pet.delivery.controllers;
 
 import application.pet.delivery.DTO.UserDTO;
-import application.pet.delivery.entities.User;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

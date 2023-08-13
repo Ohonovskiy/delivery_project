@@ -39,6 +39,16 @@ public class Shop {
     @Column(name = "shop_geolocation_y")
     private Double geolocationY;
 
+    /**
+     * The description of the shop.
+     */
+    @Column(name = "shop_description")
+    private String description;
+
+
+    /**
+     * The list of products associated with shop.
+     */
     @Setter(AccessLevel.NONE)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -54,8 +64,10 @@ public class Shop {
      * @param product The product to be added.
      */
     public void addProduct(Product product){
-        products.add(product);
-        product.getShops().add(this);
+        if(!products.contains(product)) {
+            products.add(product);
+            product.getShops().add(this);
+        }
     }
 
     /**

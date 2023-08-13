@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Service class for managing shop-related operations.
  */
@@ -20,14 +23,19 @@ public class ShopService {
     }
 
     /**
-     * Retrieves a shop by its ID.
+     * Retrieves a shop optional object by its ID.
      *
      * @param id The ID of the shop.
-     * @return The shop entity.
+     * @return The optional shop entity.
      */
     @Transactional(readOnly = true)
-    public Shop getById(Long id){
-        return shopRepository.getReferenceById(id);
+    public Optional<Shop> getById(Long id){
+        return Optional.of(shopRepository.getReferenceById(id));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Shop> getAll(){
+        return shopRepository.findAll();
     }
 
     /**

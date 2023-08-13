@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${shop.getName()}"></title>
+</head>
+<body>
+
+<b1 th:text="${'Name: ' + shop.getName()}"></b1>
+
+<hr>
+<br>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Manufacturer</th>
+    </tr>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.getId()}"></td>
+        <td th:text="${product.getName()}"></td>
+        <td th:text="${product.getPrice()}"></td>
+        <td th:text="${product.getQuantity()}"></td>
+        <td th:text="${product.getManufacturer().getName()}"></td>
+        <td>
+
+                    <!--    If user already has that product        -->
+            <span th:if="${userProducts.contains(product)}">
+                <form method="post" th:action="@{/shops/removeProduct}">
+                    <input type="hidden" name="productId" th:value="${product.getId()}">
+                    <input type="hidden" name="shopId" th:value="${shop.getId()}">
+                    <button type="submit">Remove from cart</button>
+                </form>
+            </span>
+
+            <!--    If user has not that product        -->
+            <span th:if="!${userProducts.contains(product)}">
+                <form method="post" th:action="@{/shops/addProduct}">
+                    <input type="hidden" name="productId" th:value="${product.getId()}">
+                    <input type="hidden" name="shopId" th:value="${shop.getId()}">
+                    <button type="submit">Add to cart</button>
+                </form>
+            </span>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

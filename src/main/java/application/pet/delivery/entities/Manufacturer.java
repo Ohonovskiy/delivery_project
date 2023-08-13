@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @Table(name = "manufacturers")
 public class Manufacturer {
+
     /**
      * The unique ID of the manufacturer.
      */
