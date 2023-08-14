@@ -1,6 +1,5 @@
 package application.pet.delivery.config.security;
 
-import application.pet.delivery.security.DeliverymanDetailsServiceImpl;
 import application.pet.delivery.security.UserDetailsServiceImpl;
 import application.pet.delivery.security.passwordEncoders.NoEncode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,22 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.WebSecurityExpressionRoot;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Configuration class for Spring Security settings and authentication mechanisms.
@@ -31,22 +23,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
-
-    private final DeliverymanDetailsServiceImpl deliverymanDetailsService;
 
     /**
      * Constructs a new instance of SpringConfig with the provided user details service.
      *
      * @param userDetailsService        An implementation of the UserDetailsServiceImpl to retrieve user details.
-     * @param deliverymanDetailsService An implementation of the UserDetailsServiceImpl to retrieve user details.
      */
     @Autowired
-    public SpringConfig(UserDetailsServiceImpl userDetailsService, DeliverymanDetailsServiceImpl deliverymanDetailsService) {
+    public SpringConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.deliverymanDetailsService = deliverymanDetailsService;
     }
 
 
@@ -106,13 +95,6 @@ public class SpringConfig {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        return daoAuthenticationProvider;
-    }
-    @Bean
-    protected DaoAuthenticationProvider deliveryManAuthenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(deliverymanDetailsService);
         return daoAuthenticationProvider;
     }
 }

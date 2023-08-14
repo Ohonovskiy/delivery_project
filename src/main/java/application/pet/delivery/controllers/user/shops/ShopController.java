@@ -1,4 +1,4 @@
-package application.pet.delivery.controllers.shop;
+package application.pet.delivery.controllers.user.shops;
 
 import application.pet.delivery.entities.Shop;
 import application.pet.delivery.entities.User;

@@ -1,6 +1,8 @@
 package application.pet.delivery.controllers.user;
 
+import application.pet.delivery.entities.Order;
 import application.pet.delivery.entities.User;
+import application.pet.delivery.services.OrderService;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,21 +14,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+
 /**
  * Controller class for managing user-related operations and views.
  */
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("isAuthenticated()")
-public class UserController {
+public class ProfileController {
     private final UserService userService;
+    private final OrderService orderService;
     private User currentUser;
 
     @Autowired
-    public UserController(UserService userService) {
+    public ProfileController(UserService userService, OrderService orderService) {
         this.userService = userService;
+        this.orderService = orderService;
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @GetMapping
     public String userPage(Model model){
         setCurrentUser();
@@ -42,8 +48,26 @@ public class UserController {
         currentUser.removeProductFromCart(id);
 
         userService.save(currentUser);
+
         return "redirect:/user";
     }
+
+    @PostMapping("/placeOrder")
+    public String placeOrder() {
+        setCurrentUser();
+        Order order = new Order();
+        order.setUser(currentUser);
+        order.setProducts(new ArrayList<>(currentUser.getProducts()));
+
+        currentUser.removeAllProductsFromCart();
+
+        orderService.save(order);
+
+        userService.save(currentUser);
+
+        return "redirect:/user";
+    }
+
 
     private void setCurrentUser(){
         currentUser = userService

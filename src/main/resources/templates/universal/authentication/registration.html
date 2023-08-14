@@ -29,6 +29,12 @@
         <label for="birth">Birthday:</label>
         <input type="date" id="birth" name="birth" required><br>
 
+        <label for="role">Select role:</label>
+        <select name="role" id="role">
+            <option value="ROLE_USER">I want to order products!</option>
+            <option value="ROLE_DELIVERY_MAN">I want to deliver products!</option>
+        </select>
+
         <div class="checkbox-container">
             <label for="locationCheckbox">Geolocation permission:</label>
             <input type="checkbox" id="locationCheckbox" th:checked="true" onclick="blurButton()">

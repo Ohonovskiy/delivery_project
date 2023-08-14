@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,14 +20,19 @@ public class DeliveryManService {
         this.deliverymanRepository = deliverymanRepository;
     }
 
+    @Transactional(readOnly = true)
     public Optional<DeliveryMan> getById(Long id){
         return deliverymanRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<DeliveryMan> getAll(){
         return deliverymanRepository.findAll();
     }
 
+    public void save(DeliveryMan deliveryMan){
+        deliverymanRepository.save(deliveryMan);
+    }
     public void remove(Long id){
         deliverymanRepository.deleteById(id);
     }
@@ -36,5 +42,9 @@ public class DeliveryManService {
 
     public void removeAll(){
         deliverymanRepository.deleteAll();
+    }
+
+    public Optional<DeliveryMan> getByEmail(String email) {
+        return deliverymanRepository.findByEmail(email);
     }
 }

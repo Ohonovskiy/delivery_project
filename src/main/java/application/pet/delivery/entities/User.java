@@ -96,7 +96,7 @@ public class User implements Comparable<User> {
     )
     private List<Product> products;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
     /**

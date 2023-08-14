@@ -1,6 +1,6 @@
 package application.pet.delivery.controllers;
 
-import application.pet.delivery.DTO.UserDTO;
+import application.pet.delivery.services.DeliveryManService;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,41 +10,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/**
- * Controller class responsible for handling the index page and displaying user information.
- */
 @Controller
 @PreAuthorize("isAuthenticated()")
 public class IndexController {
     private final UserService userService;
+    private final DeliveryManService deliveryManService;
 
-    /**
-     * Constructs a new instance of IndexController with the provided user service.
-     *
-     * @param userService An instance of the UserService for managing user-related operations.
-     */
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, DeliveryManService deliveryManService) {
         this.userService = userService;
+        this.deliveryManService = deliveryManService;
     }
 
-    /**
-     * Displays user information on the index page.
-     *
-     * @param model The Model instance to add attributes for rendering in the view.
-     * @return The name of the view template for the index page.
-     */
     @GetMapping
     public String index(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        UserDTO user;
+        if(deliveryManService.getByEmail(authentication.getName()).isPresent())
+            return "redirect:/delivery";
 
-        if(userService.getByEmail(authentication.getName()).isPresent()) {
-            user = userService.convertToDTO(userService.getByEmail(authentication.getName()).get());
 
-            model.addAttribute("name", user.getFirstName());
-        }
+        model.addAttribute("name", userService.getByEmail(authentication.getName()).get().getFirstName());
 
         return "index/index";
     }

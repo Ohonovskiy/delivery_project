@@ -20,12 +20,17 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id_fk")
     private User user;
 
-    @ManyToMany(mappedBy = "orders")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "order_id_fk"),
+            inverseJoinColumns = @JoinColumn(name = "product_id_fk")
+    )
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne
-    @Nullable
+    @OneToOne(mappedBy = "order")
     private DeliveryMan deliveryMan;
 }

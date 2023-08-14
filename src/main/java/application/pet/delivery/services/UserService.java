@@ -2,7 +2,9 @@ package application.pet.delivery.services;
 
 import application.pet.delivery.DTO.ProductDTO;
 import application.pet.delivery.DTO.UserDTO;
+import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.User;
+import application.pet.delivery.enums.Role;
 import application.pet.delivery.enums.Status;
 import application.pet.delivery.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +142,21 @@ public class UserService {
         User user = getById(id);
         user.setStatus(Status.ACTIVE);
         save(user);
+    }
+
+    public DeliveryMan convertToDeliveryman(User user){
+        DeliveryMan deliveryMan = new DeliveryMan();
+        deliveryMan.setEmail(user.getEmail());
+        deliveryMan.setPassword(user.getPassword());
+        deliveryMan.setFirstName(user.getFirstName());
+        deliveryMan.setLastName(user.getLastName());
+        deliveryMan.setBirthdayDate(user.getBirthdayDate());
+        deliveryMan.setRole(Role.ROLE_DELIVERY_MAN);
+        deliveryMan.setGeolocationX(user.getGeolocationX());
+        deliveryMan.setGeolocationY(user.getGeolocationY());
+        deliveryMan.setStatus(user.getStatus());
+
+        return deliveryMan;
     }
 
     /**

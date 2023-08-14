@@ -85,11 +85,6 @@ public class Product {
     @ToString.Exclude
     private List<Shop> shops = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_product",
-            joinColumns = @JoinColumn(name = "product_id_fk"),
-            inverseJoinColumns = @JoinColumn(name = "order_id_fk")
-    )
+    @ManyToMany(mappedBy = "products")
     private List<Order> orders = new ArrayList<>();
 }

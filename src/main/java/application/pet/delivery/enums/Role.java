@@ -13,33 +13,22 @@ public enum Role {
     /**
      * Administrator role with associated permissions.
      */
-    ROLE_ADMIN(Set.of(
-            Permission.DEVELOPERS_WRITE,
-            Permission.DEVELOPERS_DELETE,
-            Permission.DEVELOPERS_BAN,
-            Permission.DEVELOPERS_ADMIN_PAGE)),
+    ROLE_ADMIN(Set.of(Permission.ADMIN_ROLE)),
 
     /**
      * User role with associated permissions.
      */
-    ROLE_USER(Set.of(
-            Permission.USER_ADD_TO_CART,
-            Permission.USER_PLACE_ORDER,
-            Permission.USER_CANCEL_ORDER)),
+    ROLE_USER(Set.of(Permission.USER_ROLE)),
 
     /**
      * Delivery man role with associated permissions.
      */
-    ROLE_DELIVERY_MAN(Set.of(
-            Permission.DELIVERY_MAN_TAKE_ORDER,
-            Permission.DELIVERY_MAN_CANCEL_ORDER)),
+    ROLE_DELIVERY_MAN(Set.of(Permission.DELIVERY_MAN_ROLE)),
 
     /**
      * Shop role with associated permissions.
      */
-    ROLE_SHOP(Set.of(
-            Permission.SHOP_ADD,
-            Permission.SHOP_REMOVE));
+    ROLE_SHOP(Set.of(Permission.SHOP_ROLE));
 
     private final Set<Permission> permissions;
 

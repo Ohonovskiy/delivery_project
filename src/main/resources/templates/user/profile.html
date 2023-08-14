@@ -36,6 +36,10 @@
 
 <div th:if="${!userProducts.isEmpty()}" class="total-price">
     <p>Total Price: $<span id="totalPrice"></span></p>
+
+    <form method="post" th:action="@{/user/placeOrder}" class="place-order">
+        <button type="submit">Place order</button>
+    </form>
 </div>
 
 <script th:inline="javascript">

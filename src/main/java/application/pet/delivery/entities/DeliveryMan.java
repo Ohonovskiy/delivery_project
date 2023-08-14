@@ -2,6 +2,7 @@ package application.pet.delivery.entities;
 
 import application.pet.delivery.enums.Role;
 import application.pet.delivery.enums.Status;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,7 +51,9 @@ public class DeliveryMan {
     @Column(name = "delivery_man_geolocation_y")
     private Double geolocationY;
 
-    @OneToOne(mappedBy = "deliveryMan")
+    @OneToOne
+    @JoinColumn(name = "order_id_fk")
+    @Nullable
     private Order order;
 
     public void setOrder(Order newOrder){

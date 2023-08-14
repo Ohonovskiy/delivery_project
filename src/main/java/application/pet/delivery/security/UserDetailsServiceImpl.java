@@ -1,6 +1,8 @@
 package application.pet.delivery.security;
 
+import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.User;
+import application.pet.delivery.repositories.DeliverymanRepository;
 import application.pet.delivery.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,10 +16,12 @@ import org.springframework.stereotype.Service;
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
+    private final DeliverymanRepository deliverymanRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository, DeliverymanRepository deliverymanRepository) {
         this.userRepository = userRepository;
+        this.deliverymanRepository = deliverymanRepository;
     }
 
     /**
@@ -29,8 +33,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username).orElseThrow(() ->
-                new UsernameNotFoundException("User does not exist"));
-        return SecurityUser.fromUser(user);
+        if(userRepository.findByEmail(username).isPresent()) {
+            User user = userRepository.findByEmail(username).get();
+            return SecurityUser.fromUser(user);
+        } else {
+            DeliveryMan deliveryMan = deliverymanRepository.findByEmail(username).orElseThrow(() ->
+                    new UsernameNotFoundException("User does not exist"));
+            return SecurityDeliveryman.fromDeliveryman(deliveryMan);
+        }
     }
 }
