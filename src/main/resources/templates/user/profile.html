@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User overview</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
+</head>
+<body>
+<div th:insert="~{frames/headerFrame :: header}"></div>
+
+<br>
+<table class="product-table">
+    <tr class="header-row">
+        <th>Name</th>
+        <th>Price</th>
+        <th>Manufacturer</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="product : ${userProducts}" class="product-row">
+        <td th:text="${product.getName()}"></td>
+        <td th:text="${product.getPrice()}"></td>
+        <td th:text="${product.getManufacturer().getName()}"></td>
+        <td>
+            <span th:if="${userProducts.contains(product)}">
+                <form method="post" th:action="@{/user/removeProduct}" class="remove-form">
+                    <input type="hidden" name="productId" th:value="${product.getId()}">
+                    <button type="submit">Remove</button>
+                </form>
+            </span>
+        </td>
+    </tr>
+</table>
+
+<div th:if="${!userProducts.isEmpty()}" class="total-price">
+    <p>Total Price: $<span id="totalPrice"></span></p>
+</div>
+
+<script th:inline="javascript">
+    let totalPrice = 0;
+    let productPrices = /*[[${userProducts.![price]}]]*/ [];
+
+    for (let i = 0; i < productPrices.length; i++) {
+        totalPrice += productPrices[i];
+    }
+
+    document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
+</script>
+</body>
+</html>

@@ -1,7 +1,5 @@
-package application.pet.delivery.controllers;
+package application.pet.delivery.controllers.shop;
 
-import application.pet.delivery.entities.Manufacturer;
-import application.pet.delivery.entities.Product;
 import application.pet.delivery.entities.Shop;
 import application.pet.delivery.entities.User;
 import application.pet.delivery.services.ManufacturerService;
@@ -14,9 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Calendar;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/shops")

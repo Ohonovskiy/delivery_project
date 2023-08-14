@@ -1,6 +1,7 @@
-package application.pet.delivery.controllers;
+package application.pet.delivery.controllers.auth;
 
 import application.pet.delivery.entities.User;
+import application.pet.delivery.enums.Role;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,7 @@ public class AuthController {
     public String register(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("birth", "");
-        return "authentication/registration";
+        return "user/authentication/registration";
     }
 
     /**
@@ -60,6 +61,7 @@ public class AuthController {
         user.setBirthdayDate(new SimpleDateFormat("yyyy-MM-dd").parse(birthdayDate));
         user.setGeolocationX(longitude);
         user.setGeolocationY(latitude);
+        user.setRole(Role.ROLE_USER);
 
         userService.save(user);
 
@@ -73,7 +75,7 @@ public class AuthController {
      */
     @GetMapping("/login")
     public String login(){
-        return "authentication/login";
+        return "user/authentication/login";
     }
 
     /**
@@ -83,7 +85,7 @@ public class AuthController {
      */
     @GetMapping("/success")
     public String success(){
-        return "authentication/registerMsg";
+        return "user/authentication/registerMsg";
     }
 
     /**
@@ -93,7 +95,7 @@ public class AuthController {
      */
     @GetMapping("/logout")
     public String logout(){
-        return "authentication/logout";
+        return "user/authentication/logout";
     }
 
 }

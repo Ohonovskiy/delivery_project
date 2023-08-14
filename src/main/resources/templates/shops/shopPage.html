@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${shop.getName()}"></title>
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
 </head>
 <body>
+    <div th:insert="~{frames/headerFrame :: header}"></div>
 
-<b1 th:text="${'Name: ' + shop.getName()}"></b1>
+    <b1 th:text="${'Name: ' + shop.getName()}"></b1>
 
 <hr>
 <br>

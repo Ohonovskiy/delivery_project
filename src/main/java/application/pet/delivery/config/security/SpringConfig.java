@@ -1,19 +1,29 @@
 package application.pet.delivery.config.security;
 
+import application.pet.delivery.security.DeliverymanDetailsServiceImpl;
 import application.pet.delivery.security.UserDetailsServiceImpl;
 import application.pet.delivery.security.passwordEncoders.NoEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebSecurityExpressionRoot;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Configuration class for Spring Security settings and authentication mechanisms.
@@ -25,14 +35,18 @@ public class SpringConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
 
+    private final DeliverymanDetailsServiceImpl deliverymanDetailsService;
+
     /**
      * Constructs a new instance of SpringConfig with the provided user details service.
      *
-     * @param userDetailsService An implementation of the UserDetailsServiceImpl to retrieve user details.
+     * @param userDetailsService        An implementation of the UserDetailsServiceImpl to retrieve user details.
+     * @param deliverymanDetailsService An implementation of the UserDetailsServiceImpl to retrieve user details.
      */
     @Autowired
-    public SpringConfig(UserDetailsServiceImpl userDetailsService) {
+    public SpringConfig(UserDetailsServiceImpl userDetailsService, DeliverymanDetailsServiceImpl deliverymanDetailsService) {
         this.userDetailsService = userDetailsService;
+        this.deliverymanDetailsService = deliverymanDetailsService;
     }
 
 
@@ -47,10 +61,10 @@ public class SpringConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/auth/**", "/css/**", "/images/**").permitAll()
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
-//                .httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(ses ->
                         ses.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                                 .sessionFixation().migrateSession()
@@ -94,6 +108,12 @@ public class SpringConfig {
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
     }
-
+    @Bean
+    protected DaoAuthenticationProvider deliveryManAuthenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(deliverymanDetailsService);
+        return daoAuthenticationProvider;
+    }
 }
 

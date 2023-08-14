@@ -1,4 +1,4 @@
-package application.pet.delivery.controllers;
+package application.pet.delivery.controllers.admin;
 
 import application.pet.delivery.entities.User;
 import application.pet.delivery.enums.Status;

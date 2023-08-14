@@ -3,6 +3,7 @@ package application.pet.delivery.entities;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.aspectj.weaver.ast.Or;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,4 +84,12 @@ public class Product {
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
     private List<Shop> shops = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "product_id_fk"),
+            inverseJoinColumns = @JoinColumn(name = "order_id_fk")
+    )
+    private List<Order> orders = new ArrayList<>();
 }

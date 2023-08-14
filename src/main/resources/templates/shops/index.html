@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>Shops</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/shopIndex.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
 </head>
 <body>
+<div th:insert="~{frames/headerFrame :: header}"></div>
 
 <hr>
 <br>
 <div class="shop-grid">
     <div th:each="shop : ${shops}" class="shop-item">
         <a th:href="@{/shops/{id}(id=${shop.getId()})}">
-            <img th:src="@{images/shop_image.jpeg}" alt="Shop Image">
+<!--            <img th:src="@{images/shop_image.jpeg}" alt="Shop Image">-->
             <div class="shop-name" th:text="${shop.getName()}"></div>
         </a>
     </div>

@@ -1,0 +1,75 @@
+/* Reset some default styling */
+body, h1, h2, h3, p, ul, li, table, td, th {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Set a background color and font family */
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+/* Center the content */
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Style the header */
+header {
+    background-color: #35495e;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Style the table */
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px auto 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+th {
+    background-color: #35495e;
+    color: white;
+}
+
+/* Style the "Remove from cart" button */
+button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+/* Style the total price section */
+#totalPrice {
+    font-weight: bold;
+    color: #e74c3c;
+    text-align: center;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+    th, td {
+        padding: 8px 10px;
+    }
+}

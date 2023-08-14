@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User List</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
 </head>
 <body>
+<div th:replace="~{headerFrame :: header}"></div>
 <h1>User List</h1>
 <table>
     <tr>

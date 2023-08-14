@@ -5,6 +5,7 @@
     <title>Logout</title>
 </head>
 <body>
+<div th:insert="~{frames/headerFrame :: header}"></div>
 <form th:action="@{/auth/logout}" method="post">
     <button type="submit">Logout</button>
 </form>

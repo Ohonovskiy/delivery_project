@@ -96,6 +96,9 @@ public class User implements Comparable<User> {
     )
     private List<Product> products;
 
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
     /**
      * Adds a product to the user's cart.
      *
