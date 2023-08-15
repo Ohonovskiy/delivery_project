@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -51,13 +52,12 @@ public class DeliveryMan {
     @Column(name = "delivery_man_geolocation_y")
     private Double geolocationY;
 
-    @OneToOne
-    @JoinColumn(name = "order_id_fk")
+    @OneToOne(mappedBy = "deliveryMan")
     @Nullable
     private Order order;
 
     public Boolean hasOrder(){
-        return order != null;
+        return this.order != null;
     }
 
     public void setOrder(Order newOrder) {
@@ -67,8 +67,19 @@ public class DeliveryMan {
     }
 
     public void removeOrder(){
-        this.order.setStatus(application.pet.delivery.enums.order.Status.WAITING);
-        this.order.setDeliveryMan(null);
-        this.order = null;
+        if(this.order != null){
+            this.order.setStatus(application.pet.delivery.enums.order.Status.WAITING);
+            this.order.setDeliveryMan(null);
+            this.order = null;
+        }
+    }
+
+    public void completeOrder(){
+        if(this.order != null) {
+            this.order.setStatus(application.pet.delivery.enums.order.Status.DONE);
+            this.order.setCompleteTime(new Timestamp(System.currentTimeMillis()));
+            this.order.setDeliveryMan(null);
+            this.order = null;
+        }
     }
 }

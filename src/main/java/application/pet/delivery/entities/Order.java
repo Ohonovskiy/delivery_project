@@ -1,10 +1,10 @@
 package application.pet.delivery.entities;
 
 import application.pet.delivery.enums.order.Status;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +24,12 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.WAITING;
 
+    @Column(name = "order_place_time")
+    @Setter(AccessLevel.NONE)
+    private Timestamp placeTime = new Timestamp(System.currentTimeMillis());
+    @Column(name = "order_complete_time")
+    private Timestamp completeTime;
+
     @ManyToOne
     @JoinColumn(name = "user_id_fk")
     private User user;
@@ -36,7 +42,8 @@ public class Order {
     )
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne
+    @JoinColumn(name = "delivery_man_id_fk")
     @ToString.Exclude
     private DeliveryMan deliveryMan;
 }

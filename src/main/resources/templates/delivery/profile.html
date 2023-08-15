@@ -3,10 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
+<!--    <link rel="stylesheet" th:href="@{/css/header.css}" />-->
+<!--    <link rel="stylesheet" th:href="@{/css/deliveryProfile.css}" />-->
+        <link rel="stylesheet" th:href="@{/css/style2.css}" />
 </head>
 <body>
-<form method="post" th:action="@{/delivery/cancelDelivery}">
-  <button type="submit">Cancel delivery</button>
-</form>
+<div th:insert="~{frames/deliveryHeaderFrame :: header}"></div>
+
+<div class="delivery-profile-label">
+    <h1>Delivery Profile</h1>
+</div>
+
+<div class="container" th:if="${hasOrder}">
+    <table class="product-table">
+        <tr class="header-row">
+            <th>Id</th>
+            <th>Products</th>
+            <th>Manufacturer</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        <tr class="product-row">
+            <td th:text="${order.getId()}"></td>
+            <td>
+                <span th:each="product : ${order.getProducts()}">
+                    <span th:text="${product.getName()}"></span><br/>
+                </span>
+            </td>
+            <td>
+                <span th:each="product : ${order.getProducts()}">
+                    <span th:text="${product.getManufacturer().getName()}"></span><br/>
+                </span>
+            </td>
+            <td>
+                <span th:each="product : ${order.getProducts()}">
+                    <span th:text="${product.getPrice()}"></span><br/>
+                </span>
+            </td>
+            <td>
+                <form method="post" th:action="@{/delivery/cancelDelivery}">
+                    <button type="submit">Cancel delivery</button>
+                </form>
+                <form method="post" th:action="@{/delivery/completeDelivery}">
+                    <button type="submit">Complete delivery</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
 </body>
 </html>

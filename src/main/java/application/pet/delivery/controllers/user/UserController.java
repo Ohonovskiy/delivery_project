@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 @Controller
 @RequestMapping("/user")
+@PreAuthorize("hasAuthority('user')")
 public class UserController {
     private final UserService userService;
     private final OrderService orderService;
@@ -32,14 +33,27 @@ public class UserController {
         this.orderService = orderService;
     }
 
-    @PreAuthorize("hasAuthority('user')")
     @GetMapping
+    public String index(){
+        return "user/index";
+    }
+
+    @GetMapping("/profile")
     public String userPage(Model model){
         setCurrentUser();
 
         model.addAttribute("userProducts", currentUser.getProducts());
 
         return "user/profile";
+    }
+
+    @GetMapping("/orders")
+    public String userOrders(Model model){
+        setCurrentUser();
+
+        model.addAttribute("orders", currentUser.getOrders());
+
+        return "user/orders";
     }
 
     @PostMapping("/removeProduct")
@@ -55,14 +69,15 @@ public class UserController {
     @PostMapping("/placeOrder")
     public String placeOrder() {
         setCurrentUser();
+
         Order order = new Order();
+
         order.setUser(currentUser);
         order.setProducts(new ArrayList<>(currentUser.getProducts()));
 
         currentUser.removeAllProductsFromCart();
 
         orderService.save(order);
-
         userService.save(currentUser);
 
         return "redirect:/user";
@@ -74,6 +89,7 @@ public class UserController {
                 .getByEmail(SecurityContextHolder
                         .getContext()
                         .getAuthentication()
-                        .getName()).get();
+                        .getName())
+                .orElseThrow(() -> new RuntimeException("User with that email doesn't exist"));
     }
 }

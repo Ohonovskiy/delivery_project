@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+<!--    <link rel="stylesheet" th:href="@{/css/header.css}" />-->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style2.css}" />
+
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
+</head>
+<body>
+<div th:insert="~{frames/headerFrame :: header}"></div>
+
+<br>
+<table class="product-table">
+    <tr class="header-row">
+        <th>Order id</th>
+        <th>Products</th>
+        <th>Manufacturer</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="order : ${orders}" class="product-row">
+        <td th:text="${order.getId()}"></td>
+        <td>
+            <span th:each="product : ${order.getProducts()}">
+                <span th:text="${product.getName()}"></span><br/>
+            </span>
+        </td>
+        <td>
+            <span th:each="product : ${order.getProducts()}">
+                <span th:text="${product.getManufacturer().getName()}"></span><br/>
+            </span>
+        </td>
+        <td th:text="${order.getStatus()}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

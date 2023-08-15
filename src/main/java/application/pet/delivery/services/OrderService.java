@@ -34,6 +34,11 @@ public class OrderService {
         return orderRepository.findAllByDeliveryManIsNullAndStatusEquals(Status.WAITING);
     }
 
+    @Transactional(readOnly = true)
+    public List<Order> getAllDoneOrders(){
+        return orderRepository.findAllByStatusEquals(Status.DONE);
+    }
+
     public void remove(Order order){
         order.getDeliveryMan().removeOrder();
         order.getUser().getOrders().remove(order);

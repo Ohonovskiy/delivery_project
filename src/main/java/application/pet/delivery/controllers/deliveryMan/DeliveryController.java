@@ -2,7 +2,6 @@ package application.pet.delivery.controllers.deliveryMan;
 
 import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.Order;
-import application.pet.delivery.enums.order.Status;
 import application.pet.delivery.services.DeliveryManService;
 import application.pet.delivery.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,13 @@ public class DeliveryController {
         return "delivery/index";
     }
 
-    @GetMapping("/deliveryman")
-    public String profile(){
+    @GetMapping("/profile")
+    public String profile(Model model){
+        setCurrentDeliveryMan();
+
+        model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
+        model.addAttribute("order", currentDeliveryMan.getOrder());
+
         return "delivery/profile";
     }
 
@@ -46,8 +50,7 @@ public class DeliveryController {
         setCurrentDeliveryMan();
 
         model.addAttribute("orders", orderService.getAllUnsignedOrders());
-//        model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
-        model.addAttribute("hasOrder", false);
+        model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
 
         return "delivery/orders";
     }
@@ -59,14 +62,11 @@ public class DeliveryController {
         Optional<Order> optionalOrder = orderService.getById(orderId);
 
         if(optionalOrder.isPresent()){
-//            if(optionalOrder.get().getDeliveryMan() != null)
-//                return "delivery/orderIsTaken";
+            if(optionalOrder.get().getDeliveryMan() != null)
+                return "delivery/orderIsTaken";
 
             currentDeliveryMan.setOrder(optionalOrder.get());
 
-            System.out.println(currentDeliveryMan.getOrder().getId());
-
-            orderService.save(optionalOrder.get());
             deliveryManService.save(currentDeliveryMan);
         }
 
@@ -77,11 +77,22 @@ public class DeliveryController {
     public String cancelOrder(){
         setCurrentDeliveryMan();
 
-//        currentDeliveryMan.getOrder().removeDeliveryman();
+        System.out.println(currentDeliveryMan.getOrder() == null);
 
         currentDeliveryMan.removeOrder();
+        deliveryManService.save(currentDeliveryMan);
 
-        return "redirect:deliveryman";
+        return "redirect:profile";
+    }
+
+    @PostMapping("/completeDelivery")
+    public String completeDelivery(){
+        setCurrentDeliveryMan();
+
+        currentDeliveryMan.completeOrder();
+        deliveryManService.save(currentDeliveryMan);
+
+        return "redirect:profile";
     }
 
     private void setCurrentDeliveryMan(){
@@ -92,5 +103,4 @@ public class DeliveryController {
                         .getName())
                 .orElseThrow(() -> new RuntimeException("Delivery man not found"));
     }
-
 }
