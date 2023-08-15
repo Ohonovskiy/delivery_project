@@ -1,4 +1,4 @@
-package application.pet.delivery.enums;
+package application.pet.delivery.enums.users;
 
 /**
  * Enum representing various permissions that can be assigned to users in the application.

@@ -1,5 +1,6 @@
 package application.pet.delivery.entities;
 
+import application.pet.delivery.enums.order.Status;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +20,10 @@ public class Order {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(name = "order_status")
+    @Enumerated(value = EnumType.STRING)
+    private Status status = Status.WAITING;
+
     @ManyToOne
     @JoinColumn(name = "user_id_fk")
     private User user;
@@ -32,5 +37,6 @@ public class Order {
     private List<Product> products = new ArrayList<>();
 
     @OneToOne(mappedBy = "order")
+    @ToString.Exclude
     private DeliveryMan deliveryMan;
 }

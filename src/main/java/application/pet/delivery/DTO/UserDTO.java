@@ -1,7 +1,7 @@
 package application.pet.delivery.DTO;
 
-import application.pet.delivery.enums.Role;
-import application.pet.delivery.enums.Status;
+import application.pet.delivery.enums.users.Role;
+import application.pet.delivery.enums.users.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

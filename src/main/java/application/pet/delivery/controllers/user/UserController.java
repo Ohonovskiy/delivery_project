@@ -21,13 +21,13 @@ import java.util.ArrayList;
  */
 @Controller
 @RequestMapping("/user")
-public class ProfileController {
+public class UserController {
     private final UserService userService;
     private final OrderService orderService;
     private User currentUser;
 
     @Autowired
-    public ProfileController(UserService userService, OrderService orderService) {
+    public UserController(UserService userService, OrderService orderService) {
         this.userService = userService;
         this.orderService = orderService;
     }

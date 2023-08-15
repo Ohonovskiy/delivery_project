@@ -2,7 +2,7 @@ package application.pet.delivery.controllers.auth;
 
 import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.User;
-import application.pet.delivery.enums.Role;
+import application.pet.delivery.enums.users.Role;
 import application.pet.delivery.services.DeliveryManService;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

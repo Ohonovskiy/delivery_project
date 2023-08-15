@@ -1,4 +1,4 @@
-package application.pet.delivery.enums;
+package application.pet.delivery.enums.users;
 
 /**
  * Enum representing the status of a user or entity in the application.

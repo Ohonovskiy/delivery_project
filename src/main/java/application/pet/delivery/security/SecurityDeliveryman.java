@@ -1,7 +1,7 @@
 package application.pet.delivery.security;
 
 import application.pet.delivery.entities.DeliveryMan;
-import application.pet.delivery.enums.Status;
+import application.pet.delivery.enums.users.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

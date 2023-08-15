@@ -86,5 +86,6 @@ public class Product {
     private List<Shop> shops = new ArrayList<>();
 
     @ManyToMany(mappedBy = "products")
+    @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
 }

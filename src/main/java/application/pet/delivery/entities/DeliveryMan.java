@@ -1,7 +1,7 @@
 package application.pet.delivery.entities;
 
-import application.pet.delivery.enums.Role;
-import application.pet.delivery.enums.Status;
+import application.pet.delivery.enums.users.Role;
+import application.pet.delivery.enums.users.Status;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,12 +56,19 @@ public class DeliveryMan {
     @Nullable
     private Order order;
 
-    public void setOrder(Order newOrder){
-        this.order = newOrder;
+    public Boolean hasOrder(){
+        return order != null;
+    }
+
+    public void setOrder(Order newOrder) {
         newOrder.setDeliveryMan(this);
+        newOrder.setStatus(application.pet.delivery.enums.order.Status.TAKEN);
+        this.order = newOrder;
     }
 
     public void removeOrder(){
+        this.order.setStatus(application.pet.delivery.enums.order.Status.WAITING);
+        this.order.setDeliveryMan(null);
         this.order = null;
     }
 }

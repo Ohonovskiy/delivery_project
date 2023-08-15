@@ -1,4 +1,4 @@
-package application.pet.delivery.enums;
+package application.pet.delivery.enums.users;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

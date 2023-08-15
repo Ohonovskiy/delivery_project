@@ -1,7 +1,7 @@
 package application.pet.delivery.entities;
 
-import application.pet.delivery.enums.Role;
-import application.pet.delivery.enums.Status;
+import application.pet.delivery.enums.users.Role;
+import application.pet.delivery.enums.users.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;

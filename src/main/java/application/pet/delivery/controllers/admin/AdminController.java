@@ -1,7 +1,7 @@
 package application.pet.delivery.controllers.admin;
 
 import application.pet.delivery.entities.User;
-import application.pet.delivery.enums.Status;
+import application.pet.delivery.enums.users.Status;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
