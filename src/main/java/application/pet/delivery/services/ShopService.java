@@ -1,13 +1,16 @@
 package application.pet.delivery.services;
 
+import application.pet.delivery.entities.DeliveryMan;
+import application.pet.delivery.entities.Order;
+import application.pet.delivery.entities.Product;
 import application.pet.delivery.entities.Shop;
 import application.pet.delivery.repositories.ShopRepository;
+import application.pet.delivery.services.GeoUtils.DistanceCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Service class for managing shop-related operations.
@@ -36,6 +39,23 @@ public class ShopService {
     @Transactional(readOnly = true)
     public List<Shop> getAll(){
         return shopRepository.findAll();
+    }
+
+    public List<Shop> sortShopsByDistance(Order order, DeliveryMan deliveryMan){
+        Set<Shop> uniqueShops = new HashSet<>();
+
+        for (Product product : order.getProducts()) {
+            uniqueShops.addAll(product.getShops());
+        }
+
+        List<Shop> shops = new ArrayList<>(uniqueShops);
+
+        shops.sort(Comparator.comparingDouble(shop -> DistanceCalculator.calculateDistance(
+                deliveryMan.getGeolocationX(), deliveryMan.getGeolocationY(),
+                shop.getGeolocationX(), shop.getGeolocationY()
+        )));
+
+        return shops;
     }
 
     /**

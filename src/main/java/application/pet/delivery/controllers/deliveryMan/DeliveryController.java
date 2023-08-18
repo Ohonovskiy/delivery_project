@@ -4,6 +4,7 @@ import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.Order;
 import application.pet.delivery.services.DeliveryManService;
 import application.pet.delivery.services.OrderService;
+import application.pet.delivery.services.GeoUtils.googleMapsApi.DirectionsApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,12 +23,27 @@ import java.util.Optional;
 public class DeliveryController {
     private final OrderService orderService;
     private final DeliveryManService deliveryManService;
+    private final DirectionsApiClient directionsApiClient;
     private DeliveryMan currentDeliveryMan;
 
     @Autowired
-    public DeliveryController(OrderService orderService, DeliveryManService deliveryManService) {
+    public DeliveryController(OrderService orderService, DeliveryManService deliveryManService, DirectionsApiClient directionsApiClient) {
         this.orderService = orderService;
         this.deliveryManService = deliveryManService;
+        this.directionsApiClient = directionsApiClient;
+    }
+
+    @GetMapping("/test1")
+    public String test() throws Exception {
+        setCurrentDeliveryMan();
+
+        String[] tripInfo = directionsApiClient.getTripInfo(currentDeliveryMan);
+
+        System.out.println(tripInfo[0]); // start
+        System.out.println(tripInfo[1]); // destination
+        System.out.println(tripInfo[2]); // route in meters
+
+        return "delivery/index";
     }
 
     @GetMapping

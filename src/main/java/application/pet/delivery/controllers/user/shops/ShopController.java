@@ -2,7 +2,6 @@ package application.pet.delivery.controllers.user.shops;
 
 import application.pet.delivery.entities.Shop;
 import application.pet.delivery.entities.User;
-import application.pet.delivery.services.ManufacturerService;
 import application.pet.delivery.services.ProductService;
 import application.pet.delivery.services.ShopService;
 import application.pet.delivery.services.UserService;
@@ -19,14 +18,12 @@ public class ShopController {
     private final ShopService shopService;
     private final ProductService productService;
     private final UserService userService;
-    private final ManufacturerService manufacturerService;
 
     @Autowired
-    public ShopController(ShopService shopService, ProductService productService, UserService userService, ManufacturerService manufacturerService) {
+    public ShopController(ShopService shopService, ProductService productService, UserService userService) {
         this.shopService = shopService;
         this.productService = productService;
         this.userService = userService;
-        this.manufacturerService = manufacturerService;
     }
 
     @GetMapping
