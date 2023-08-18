@@ -40,8 +40,7 @@ public class DirectionsApiClient {
         return getInfo(requestUrl);
     }
 
-    public String[] getTripInfo(DeliveryMan deliveryMan) throws Exception {
-        Order order = deliveryMan.getOrder();
+    public String[] getTripInfo(DeliveryMan deliveryMan, Order order) throws Exception {
         StringBuilder wayPoints = new StringBuilder();
 
         List<Shop> shops = shopService.sortShopsByDistance(order, deliveryMan);
@@ -61,8 +60,6 @@ public class DirectionsApiClient {
                 "&destination=" + geolocationToString.userGeoToString(order.getUser()) +
                 "&key=" + API_KEY;
 
-        System.out.println(requestUrl);
-
         return getInfo(requestUrl);
     }
 
@@ -79,9 +76,10 @@ public class DirectionsApiClient {
                 JSONObject routeObject = routesArray.getJSONObject(0);
                 String startAddress = addressRearranger.rearrangeAddress(routeObject.getJSONArray("legs").getJSONObject(0).getString("start_address"));
                 String endAddress = addressRearranger.rearrangeAddress(routeObject.getJSONArray("legs").getJSONObject(0).getString("end_address"));
-                int distanceMeters = routeObject.getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getInt("value");
+                int intDistanceMeters = routeObject.getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getInt("value");
+                String distanceKm = routeObject.getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getString("text");
 
-                return new String[]{startAddress, endAddress, distanceMeters + ""};
+                return new String[]{startAddress, endAddress, intDistanceMeters + "", distanceKm};
 
             } else {
                 throw new RuntimeException("Can't find route...");

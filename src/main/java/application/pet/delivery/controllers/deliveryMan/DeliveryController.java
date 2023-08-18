@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Controller
@@ -37,11 +38,12 @@ public class DeliveryController {
     public String test() throws Exception {
         setCurrentDeliveryMan();
 
-        String[] tripInfo = directionsApiClient.getTripInfo(currentDeliveryMan);
+        String[] tripInfo = directionsApiClient.getTripInfo(currentDeliveryMan, currentDeliveryMan.getOrder());
 
         System.out.println(tripInfo[0]); // start
         System.out.println(tripInfo[1]); // destination
-        System.out.println(tripInfo[2]); // route in meters
+        System.out.println(tripInfo[2]); // int in meters
+        System.out.println(tripInfo[3]); // String km
 
         return "delivery/index";
     }
@@ -62,10 +64,16 @@ public class DeliveryController {
     }
 
     @GetMapping("/availableOrders")
-    public String availableOrders(Model model){
+    public String availableOrders(Model model) throws Exception {
         setCurrentDeliveryMan();
 
-        model.addAttribute("orders", orderService.getAllUnsignedOrders());
+        HashMap<Order, String> orderOrderInfo = new HashMap<>();
+
+        for(Order order : orderService.getAllUnsignedOrders()){
+            orderOrderInfo.put(order, directionsApiClient.getTripInfo(currentDeliveryMan, order)[3]);
+        }
+
+        model.addAttribute("orderAndInfo", orderOrderInfo);
         model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
 
         return "delivery/orders";

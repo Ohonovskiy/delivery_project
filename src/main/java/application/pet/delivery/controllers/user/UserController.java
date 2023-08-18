@@ -63,7 +63,7 @@ public class UserController {
 
         userService.save(currentUser);
 
-        return "redirect:/user";
+        return "redirect:/user/profile";
     }
 
     @PostMapping("/placeOrder")
@@ -80,7 +80,7 @@ public class UserController {
         orderService.save(order);
         userService.save(currentUser);
 
-        return "redirect:/user";
+        return "redirect:/user/profile";
     }
 
 

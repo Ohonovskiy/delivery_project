@@ -85,6 +85,9 @@ public class User implements Comparable<User> {
     @Column(name = "user_geolocation_y")
     private Double geolocationY;
 
+    @Column(name = "user_contact_info")
+    private String contactInfo;
+
     /**
      * The list of products associated with the user's cart.
      */

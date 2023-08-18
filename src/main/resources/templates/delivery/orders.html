@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Orders</title>
-<!--    <link rel="stylesheet" th:href="@{/css/orders.css}" />-->
-<!--    <link rel="stylesheet" th:href="@{/css/header.css}" />-->
     <link rel="stylesheet" th:href="@{/css/style2.css}" />
 </head>
 
@@ -20,42 +18,42 @@
             <th>First name</th>
             <th>Products</th>
             <th>Shop</th>
-            <th>Client geolocation</th>
+            <th>Overall distance</th>
             <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orders}">
-            <td th:text="${order.getUser().getFirstName()}"></td>
+        <tr th:each="order: ${orderAndInfo}">
+            <td th:text="${order.key.getUser().getFirstName()}"></td>
             <td>
-                        <span th:each="product : ${order.getProducts()}">
+                        <span th:each="product : ${order.key.getProducts()}">
                             <span th:text="${product.getName()}"></span><br/>
                         </span>
             </td>
             <td>
-                   <span th:each="product : ${order.getProducts()}">
+                   <span th:each="product : ${order.key.getProducts()}">
                        <span th:each="shop : ${product.getShops()}">
                            <span th:text="${shop.getName()}"></span><br/>
                        </span>
                    </span>
             </td>
-            <td th:text="${order.getUser().getGeolocationX() + '; ' + order.getUser().getGeolocationY()}"></td>
+            <td th:text="${order.getValue()}"></td>
 
             <td class="order-button">
-                            <!--        Doesn't have active order        -->
-                    <span th:if="${hasOrder} == false">
+                <!--        Doesn't have active order        -->
+                <span th:if="${hasOrder} == false">
                         <form th:method="post" th:action="@{/delivery/takeOrder}">
-                            <input type="hidden" name="orderId" th:value="${order.getId()}">
+                            <input type="hidden" name="orderId" th:value="${order.key.getId()}">
                             <button type="submit">Take order</button>
                         </form>
                     </span>
 
-                            <!--           Has active order             -->
-                     <span th:if="${hasOrder} == true">
+                <!--           Has active order             -->
+                <span th:if="${hasOrder} == true">
                             <button  disabled>Can't take</button>
                      </span>
-                </td>
-            </tr>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
