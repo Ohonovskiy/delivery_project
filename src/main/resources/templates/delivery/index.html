@@ -3,11 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Delivery</title>
-<!--    <link rel="stylesheet" th:href="@{/css/header.css}" />-->
     <link rel="stylesheet" th:href="@{/css/style2.css}" />
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB484J_o5zls0LGtwLiIKauvGgSssRZiKE"></script>
+    <script th:inline="javascript">
+        const markersData = /*[[ ${markersData} ]]*/ [];
+    </script>
 </head>
 <body>
-    <div th:insert="~{frames/deliveryHeaderFrame :: header}"></div>
+<div th:insert="~{frames/deliveryHeaderFrame :: header}"></div>
 
+<div id="map" style="width: 80%; height: 800px;"></div>
+<script th:inline="javascript">
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: markersData[0].latitude, lng: markersData[0].longitude},
+            zoom: 13
+        });
+
+        const markers = [];
+        markersData.forEach(function(markerInfo) {
+            const marker = new google.maps.Marker({
+                position: {lat: markerInfo.latitude, lng: markerInfo.longitude},
+                map: map,
+                title: markerInfo.title
+            });
+
+            markers.push(marker);
+        });
+
+        // Calculate and display directions
+        if (markers.length >= 2) {
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer({map: map});
+
+            const origin = markers[0].getPosition();
+            const destination = markers[markers.length - 1].getPosition();
+
+            const waypoints = markers.slice(1, -1).map(marker => ({location: marker.getPosition()}));
+
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    waypoints: waypoints,
+                    travelMode: google.maps.TravelMode.DRIVING
+                },
+                function(response, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB484J_o5zls0LGtwLiIKauvGgSssRZiKE&callback=initMap"></script>
 </body>
 </html>

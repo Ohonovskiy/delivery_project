@@ -43,7 +43,7 @@ public class DirectionsApiClient {
     public String[] getTripInfo(DeliveryMan deliveryMan, Order order) throws Exception {
         StringBuilder wayPoints = new StringBuilder();
 
-        List<Shop> shops = shopService.sortShopsByDistance(order, deliveryMan);
+        List<Shop> shops = shopService.sortShopsByDistance(deliveryMan, order);
 
         for (Shop shop : shops) {
             wayPoints

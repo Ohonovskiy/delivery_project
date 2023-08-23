@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -144,6 +145,13 @@ public class User implements Comparable<User> {
     public void removeAllProductsFromCart(){
         products.forEach(product -> product.getUsers().remove(this));
         products.clear();
+    }
+
+    public void placeOrder(Order order){
+        order.setUser(this);
+        order.setProducts(new ArrayList<>(this.getProducts()));
+        this.removeAllProductsFromCart();
+        this.getOrders().add(order);
     }
 
     /**
