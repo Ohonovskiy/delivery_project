@@ -18,7 +18,8 @@ public class ShopController {
     private final ShopService shopService;
     private final ProductService productService;
     private final UserService userService;
-
+    private static Authentication authentication;
+    private static User currentUser;
     @Autowired
     public ShopController(ShopService shopService, ProductService productService, UserService userService) {
         this.shopService = shopService;
@@ -35,17 +36,12 @@ public class ShopController {
 
     @GetMapping("/{id}")
     public String shopPage(@PathVariable Long id, Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        User currentUser = null;
+        setCurrentUser();
 
         if(shopService.getById(id).isPresent()) {
             Shop shop = shopService.getById(id).get();
 
-            if(userService.getByEmail(authentication.getName()).isPresent()){
-                currentUser = userService.getByEmail(authentication.getName()).get();
-                model.addAttribute("userProducts", currentUser.getProducts());
-            }
+            model.addAttribute("userProducts", currentUser.getProducts());
 
             model.addAttribute("user", currentUser);
             model.addAttribute("shop", shop);
@@ -60,16 +56,11 @@ public class ShopController {
     @PostMapping("/addProduct")
     public String addProduct(@ModelAttribute("productId") Long id,
                              @ModelAttribute("shopId") Long shopId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        setCurrentUser();
 
-        if(userService.getByEmail(authentication.getName()).isPresent()) {
+        currentUser.addProductToCart(productService.getById(id));
 
-            User user;
-            user = userService.getByEmail(authentication.getName()).get();
-            user.addProductToCart(productService.getById(id));
-
-            userService.save(user);
-        }
+        userService.save(currentUser);
 
         return "redirect:/shops/" + shopId;
     }
@@ -77,16 +68,27 @@ public class ShopController {
     @PostMapping("/removeProduct")
     public String removeProduct(@ModelAttribute("productId") Long id,
                                 @ModelAttribute("shopId") Long shopId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        setCurrentUser();
 
-        if(userService.getByEmail(authentication.getName()).isPresent()) {
-            User user;
-            user = userService.getByEmail(authentication.getName()).get();
-            user.removeProductFromCart(id);
+        currentUser.removeProductFromCart(id);
 
-            userService.save(user);
-        }
+        userService.save(currentUser);
 
         return "redirect:/shops/" + shopId;
+    }
+
+    public boolean authenticationUserIsPresent(){
+        setAuthentication();
+        return userService.getByEmail(authentication.getName()).isPresent();
+    }
+
+    public void setAuthentication(){
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public void setCurrentUser(){
+        setAuthentication();
+        if(authenticationUserIsPresent())
+            currentUser = userService.getByEmail(authentication.getName()).get();
     }
 }

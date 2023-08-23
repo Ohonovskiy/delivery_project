@@ -64,7 +64,7 @@ public class AdminController {
     @PostMapping("/users/ban")
     public String banUser(@ModelAttribute("id") Long id){
         userService.ban(id);
-        System.out.println(id + " banned");
+
         return "redirect:/admin/users";
     }
 
@@ -77,7 +77,7 @@ public class AdminController {
     @PostMapping("/users/unban")
     public String unbanUser(@ModelAttribute("id") Long id){
         userService.unban(id);
-        System.out.println(id + " unbanned");
+
         return "redirect:/admin/users";
     }
 }

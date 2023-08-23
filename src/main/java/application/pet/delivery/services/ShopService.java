@@ -41,7 +41,7 @@ public class ShopService {
         return shopRepository.findAll();
     }
 
-    public List<Shop> sortShopsByDistance(Order order, DeliveryMan deliveryMan){
+    public List<Shop> sortShopsByDistance(DeliveryMan deliveryMan, Order order){
         Set<Shop> uniqueShops = new HashSet<>();
 
         for (Product product : order.getProducts()) {
@@ -51,8 +51,8 @@ public class ShopService {
         List<Shop> shops = new ArrayList<>(uniqueShops);
 
         shops.sort(Comparator.comparingDouble(shop -> DistanceCalculator.calculateDistance(
-                deliveryMan.getGeolocationX(), deliveryMan.getGeolocationY(),
-                shop.getGeolocationX(), shop.getGeolocationY()
+                deliveryMan.getGeolocationY(), deliveryMan.getGeolocationX(),
+                shop.getGeolocationY(), shop.getGeolocationX()
         )));
 
         return shops;
