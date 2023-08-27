@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="main">
 <head>
     <meta charset="utf-8">
     <title th:text="${shop.getName()}"></title>
@@ -115,20 +115,21 @@
             <div th:each="product : ${shop.getProducts()}" class="shop-item">
                 <div class="product-square">
                     <div class="product-image">
+<!--                        CHANGE IT TODO-->
                         <img th:src="${shop.getImage()}" th:alt="${product.getName()}" class="tinted">
                     </div>
-                    <div class="product-info">
+                    <div class="product-info product-actions" th:data-product-id="${product.getId()}">
                         <h3 th:text="${product.getName()}"></h3>
                         <th:block th:if="${user}">
                             <th:block th:if="${user.getProducts().contains(product)}">
-                                <form th:method="post" th:action="@{/shops/removeProduct}">
+                                <form class="remove-from-cart-form" th:method="POST" th:action="@{/shops/removeProduct}">
                                     <input type="hidden" name="productId" th:value="${product.getId()}">
                                     <input type="hidden" name="shopId" th:value="${shop.getId()}">
                                     <button type="submit" class="btn btn-danger">Remove from Cart</button>
                                 </form>
                             </th:block>
                             <th:block th:unless="${user.getProducts().contains(product)}">
-                                <form th:method="post" th:action="@{/shops/addProduct}">
+                                <form class="add-to-cart-form" th:method="POST" th:action="@{/shops/addProduct}">
                                     <input type="hidden" name="productId" th:value="${product.getId()}">
                                     <input type="hidden" name="shopId" th:value="${shop.getId()}">
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
@@ -231,6 +232,35 @@
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).on("submit", ".add-to-cart-form, .remove-from-cart-form", function(event) {
+            event.preventDefault();
+
+            const $form = $(this);
+            const productId = $form.closest(".product-actions").data("product-id");
+
+            $.ajax({
+                type: "POST",
+                url: $form.attr("action"),
+                data: $form.serialize(),
+                success: function(response) {
+                    const parsedResponse = $(response);
+                    const productActionsContainer = parsedResponse.find(".product-actions[data-product-id='" + productId + "']");
+
+                    $(".product-actions[data-product-id='" + productId + "']").replaceWith(productActionsContainer);
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+
+</script>
+
 
 </body>
 </html>
