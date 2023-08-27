@@ -31,6 +31,7 @@ public class ShopController {
 
     @GetMapping
     public String index(Model model){
+
         model.addAttribute("shops", shopService.getAll());
 
         return "shops/index";

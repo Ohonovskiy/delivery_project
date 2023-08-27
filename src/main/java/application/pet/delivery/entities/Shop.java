@@ -45,6 +45,9 @@ public class Shop {
     @Column(name = "shop_description")
     private String description;
 
+    @Column(name = "shop_image")
+    private String image;
+
 
     /**
      * The list of products associated with shop.
