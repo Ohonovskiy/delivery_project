@@ -1,13 +1,13 @@
 package application.pet.delivery.config.security;
 
 import application.pet.delivery.security.UserDetailsServiceImpl;
+import application.pet.delivery.security.handlers.CustomAccessDeniedHandler;
 import application.pet.delivery.security.passwordEncoders.NoEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +23,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -31,7 +30,7 @@ public class SpringConfig {
     /**
      * Constructs a new instance of SpringConfig with the provided user details service.
      *
-     * @param userDetailsService        An implementation of the UserDetailsServiceImpl to retrieve user details.
+     * @param userDetailsService An implementation of the UserDetailsServiceImpl to retrieve user details.
      */
     @Autowired
     public SpringConfig(UserDetailsServiceImpl userDetailsService) {
@@ -50,7 +49,15 @@ public class SpringConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/auth/**", "/css/**", "/images/**").permitAll()
+                                .requestMatchers(
+                                        "/auth/**",
+                                        "/css/**",
+                                        "/images/**",
+                                        "/img/**",
+                                        "/lib/**",
+                                        "/js/**",
+                                        "/scss/**",
+                                        "*").permitAll()
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -62,7 +69,7 @@ public class SpringConfig {
                                 .expiredUrl("/auth/login?expired=true"))
                 .formLogin(form -> form.loginPage("/auth/login")
                         .permitAll()
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
                         .failureUrl("/auth/login?error=true"))
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
@@ -70,6 +77,9 @@ public class SpringConfig {
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/auth/login"))
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
+                        httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/denied")
+                                .accessDeniedHandler(new CustomAccessDeniedHandler()))
                 .authenticationProvider(daoAuthenticationProvider())
                 .build();
     }
