@@ -48,6 +48,9 @@ public class Shop {
     @Column(name = "shop_image")
     private String image;
 
+    @Column(name = "shop_wide_image")
+    private String wideImage;
+
 
     /**
      * The list of products associated with shop.

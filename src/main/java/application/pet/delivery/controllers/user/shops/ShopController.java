@@ -44,8 +44,6 @@ public class ShopController {
         if(shopService.getById(id).isPresent()) {
             Shop shop = shopService.getById(id).get();
 
-            model.addAttribute("userProducts", currentUser.getProducts());
-
             model.addAttribute("user", currentUser);
             model.addAttribute("shop", shop);
             model.addAttribute("products", shop.getProducts());
@@ -57,9 +55,12 @@ public class ShopController {
     }
 
     @PostMapping("/addProduct")
-    public String addProduct(@ModelAttribute("productId") Long id,
-                             @ModelAttribute("shopId") Long shopId){
+    public String addProduct(@RequestParam("productId") Long id,
+                             @RequestParam("shopId") Long shopId){
         setCurrentUser();
+
+
+        System.out.println(id + " add");
 
         currentUser.addProductToCart(productService.getById(id));
 
@@ -69,11 +70,15 @@ public class ShopController {
     }
 
     @PostMapping("/removeProduct")
-    public String removeProduct(@ModelAttribute("productId") Long id,
-                                @ModelAttribute("shopId") Long shopId){
+    public String removeProduct(@RequestParam("productId") Long id,
+                                @RequestParam("shopId") Long shopId){
         setCurrentUser();
 
         currentUser.removeProductFromCart(id);
+
+        System.out.println(id + " rem");
+
+
 
         userService.save(currentUser);
 

@@ -107,7 +107,6 @@
 <!-- Your Content Start -->
 <div class="container-fluid">
     <div class="shop-grid">
-
         <div class="product-grid justify-content-center">
             <div th:each="shop : ${shops}" class="shop-item">
                 <a th:href="@{/shops/{id}(id=${shop.getId()})}" class="product-square">
