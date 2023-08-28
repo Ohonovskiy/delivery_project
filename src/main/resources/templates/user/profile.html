@@ -82,7 +82,7 @@
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a th:href="@{/blog}" class="dropdown-item">Some 1</a>
                                 <a th:href="@{/details}" class="dropdown-item">Some 2</a>
-                                <a th:href="testimonial.html" class="dropdown-item">Some 3</a>
+                                <a th:href="@{/user/orders}" class="dropdown-item">Orders</a>
                             </div>
                         </div>
                         <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
@@ -120,18 +120,22 @@
                     <div class="product-info product-actions" th:data-product-id="${product.getId()}">
                         <h3 th:text="${product.getName()}"></h3>
                         <h5 th:text="${'$'+product.getPrice()}"></h5>
-                            <span th:if="${user.getProducts().contains(product)}">
+                        <th:block th:if="${user}">
+                            <th:block th:if="${user.getProducts().contains(product)}">
                                 <form class="remove-from-cart-form" th:method="POST" th:action="@{/shops/removeProduct}">
                                     <input type="hidden" name="productId" th:value="${product.getId()}">
+                                    <input type="hidden" name="shopId" th:value="${product.getShops().get(0).getId()}">
                                     <button type="submit" class="btn btn-danger">Remove from Cart</button>
                                 </form>
-                            </span>
-                            <span th:if="${!user.getProducts().contains(product)}">
+                            </th:block>
+                            <th:block th:unless="${user.getProducts().contains(product)}">
                                 <form class="add-to-cart-form" th:method="POST" th:action="@{/shops/addProduct}">
                                     <input type="hidden" name="productId" th:value="${product.getId()}">
+                                    <input type="hidden" name="shopId" th:value="${product.getShops().get(0).getId()}">
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </form>
-                            </span>
+                            </th:block>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -180,7 +184,7 @@
                     <h4 class="text-uppercase text-light mb-4">Quick Links</h4>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="../newDesign/about.html"><i class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
+                        <a class="text-secondary mb-2" href="about.html"><i class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Class Schedule</a>
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Our Trainers</a>
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Latest Blog</a>
@@ -248,6 +252,7 @@
         document.getElementById("price").textContent = totalPrice.toFixed(2);
 </script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         $(document).on("submit", ".add-to-cart-form, .remove-from-cart-form", function(event) {
@@ -264,8 +269,6 @@
                     const parsedResponse = $(response);
                     const productActionsContainer = parsedResponse.find(".product-actions[data-product-id='" + productId + "']");
 
-                    console.log(productActionsContainer);
-
                     $(".product-actions[data-product-id='" + productId + "']").replaceWith(productActionsContainer);
                 },
                 error: function(error) {
@@ -274,7 +277,6 @@
             });
         });
     });
-
 </script>
 
 

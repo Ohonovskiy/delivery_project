@@ -2,6 +2,7 @@ package application.pet.delivery.controllers.user;
 
 import application.pet.delivery.entities.Order;
 import application.pet.delivery.entities.User;
+import application.pet.delivery.services.OrderService;
 import application.pet.delivery.services.ProductService;
 import application.pet.delivery.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * Controller class for managing user-related operations and views.
@@ -23,13 +25,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     private final UserService userService;
     private final ProductService productService;
+    private final OrderService orderService;
 
     private User currentUser;
 
     @Autowired
-    public UserController(UserService userService, ProductService productService) {
+    public UserController(UserService userService, ProductService productService, OrderService orderService) {
         this.userService = userService;
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -51,7 +55,13 @@ public class UserController {
     public String userOrders(Model model){
         setCurrentUser();
 
-        model.addAttribute("orders", currentUser.getOrders());
+        List<Order> orders = currentUser.getOrders();
+
+        orders.forEach(o -> o.setPrice(orderService.calculateOrderPrice(o)));
+
+
+        model.addAttribute("orders", orders);
+
 
         return "user/orders";
     }

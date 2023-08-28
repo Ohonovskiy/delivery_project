@@ -30,6 +30,9 @@ public class Order {
     @Column(name = "order_complete_time")
     private Timestamp completeTime;
 
+    @Transient
+    private Double price = 0d;
+
     @ManyToOne
     @JoinColumn(name = "user_id_fk")
     private User user;

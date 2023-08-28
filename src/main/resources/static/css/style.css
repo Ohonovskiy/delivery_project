@@ -285,6 +285,36 @@ h6,
 
 
 
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 50px;
+    border-inline: 3px solid var(--primary);
+}
+
+.header-row th {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.product-row td {
+    background-color: var(--light);
+    padding: 10px;
+    border-bottom: 1px solid var(--primary);
+}
+
+.product-row td span {
+    display: block;
+}
+
+.product-row .status {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+
 
 @media (min-width: 991.98px) {
     .credit {
