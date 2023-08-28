@@ -114,12 +114,15 @@
         <div class="product-grid justify-content-center">
             <div th:each="product : ${shop.getProducts()}" class="shop-item">
                 <div class="product-square">
-                    <div class="product-image">
-<!--                        CHANGE IT TODO-->
-                        <img th:src="${shop.getImage()}" th:alt="${product.getName()}" class="tinted">
-                    </div>
+                    <a th:href="@{/products/{id}(id=${product.getId()})}">
+                        <div class="product-image">
+    <!--                        CHANGE IT TODO-->
+                            <img th:src="${shop.getImage()}" th:alt="${product.getName()}" class="tinted">
+                        </div>
+                    </a>
                     <div class="product-info product-actions" th:data-product-id="${product.getId()}">
                         <h3 th:text="${product.getName()}"></h3>
+                        <h5 th:text="${'$'+product.getPrice()}"></h5>
                         <th:block th:if="${user}">
                             <th:block th:if="${user.getProducts().contains(product)}">
                                 <form class="remove-from-cart-form" th:method="POST" th:action="@{/shops/removeProduct}">
@@ -249,6 +252,8 @@
                 success: function(response) {
                     const parsedResponse = $(response);
                     const productActionsContainer = parsedResponse.find(".product-actions[data-product-id='" + productId + "']");
+
+                    console.log(productActionsContainer);
 
                     $(".product-actions[data-product-id='" + productId + "']").replaceWith(productActionsContainer);
                 },

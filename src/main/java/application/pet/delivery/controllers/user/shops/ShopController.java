@@ -56,33 +56,29 @@ public class ShopController {
 
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam("productId") Long id,
-                             @RequestParam("shopId") Long shopId){
+                             @RequestParam(value = "shopId", required = false) Long shopId){
         setCurrentUser();
 
-
-        System.out.println(id + " add");
-
         currentUser.addProductToCart(productService.getById(id));
-
         userService.save(currentUser);
 
-        return "redirect:/shops/" + shopId;
+        if(shopId == null) shopId = 1L;
+
+        return  "redirect:/shops/" + shopId;
     }
 
     @PostMapping("/removeProduct")
     public String removeProduct(@RequestParam("productId") Long id,
-                                @RequestParam("shopId") Long shopId){
+                                @RequestParam(value = "shopId", required = false) Long shopId){
         setCurrentUser();
 
         currentUser.removeProductFromCart(id);
-
-        System.out.println(id + " rem");
-
-
-
         userService.save(currentUser);
 
-        return "redirect:/shops/" + shopId;
+        if(shopId == null) shopId = 1L;
+
+
+        return  "redirect:/shops/" + shopId;
     }
 
     public boolean authenticationUserIsPresent(){
