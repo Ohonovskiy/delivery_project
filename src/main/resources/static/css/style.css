@@ -242,7 +242,7 @@ h6,
 
 .product-square:hover {
     transform: scale(1.05);
-    filter: brightness(150%);
+    filter: brightness(130%);
 }
 
 .product-image {
@@ -312,6 +312,31 @@ h6,
 .product-row .status {
     font-weight: bold;
     color: var(--primary);
+}
+
+.hover-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hover-icon {
+    font-size: 15px;
+}
+
+.hover-text {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hover-container:hover .hover-text {
+    display: block;
 }
 
 

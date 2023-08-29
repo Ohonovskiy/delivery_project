@@ -41,8 +41,8 @@ public class MarkerDataService {
                     ((DeliveryMan) obj).getFirstName());
         } else if (obj instanceof User){
             return new MarkerInfo(
-                    ((User) obj).getGeolocationY(),
-                    ((User) obj).getGeolocationX(),
+                    ((User) obj).getGeolocationLatitude(),
+                    ((User) obj).getGeolocationLongitude(),
                     ((User) obj).getFirstName());
         } else if(obj instanceof Shop){
             return new MarkerInfo(

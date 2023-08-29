@@ -52,6 +52,9 @@ public class DeliveryMan {
     @Column(name = "delivery_man_geolocation_y")
     private Double geolocationY;
 
+    @Column(name = "delivery_man_contact_info")
+    private String contactInfo;
+
     @OneToOne(mappedBy = "deliveryMan")
     @Nullable
     private Order order;

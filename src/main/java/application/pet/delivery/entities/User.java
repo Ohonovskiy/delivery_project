@@ -77,14 +77,14 @@ public class User implements Comparable<User> {
     /**
      * The X-coordinate of the user's geolocation.
      */
-    @Column(name = "user_geolocation_x")
-    private Double geolocationX;
+    @Column(name = "user_geolocation_y")
+    private Double geolocationLatitude;
 
     /**
      * The Y-coordinate of the user's geolocation.
      */
-    @Column(name = "user_geolocation_y")
-    private Double geolocationY;
+    @Column(name = "user_geolocation_x")
+    private Double geolocationLongitude;
 
     @Column(name = "user_contact_info")
     private String contactInfo;

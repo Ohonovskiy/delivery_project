@@ -2,6 +2,7 @@ package application.pet.delivery.controllers.deliveryMan;
 
 import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.Order;
+import application.pet.delivery.entities.googleMaps.MarkerInfo;
 import application.pet.delivery.services.DeliveryManService;
 import application.pet.delivery.services.GeoUtils.googleMapsApi.MarkerDataService;
 import application.pet.delivery.services.OrderService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -54,8 +57,10 @@ public class DeliveryController {
     }
 
     @GetMapping("/availableOrders")
-    public String availableOrders(Model model) throws Exception {
+    public String availableOrders(Model model) {
         setCurrentDeliveryMan();
+
+
 
         model.addAttribute("orderAndInfo", orderService.getOrderAndOrderInfoMap(currentDeliveryMan));
         model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
@@ -78,7 +83,7 @@ public class DeliveryController {
             deliveryManService.save(currentDeliveryMan);
         }
 
-        return "redirect:availableOrders";
+        return "redirect:/delivery";
     }
 
     @PostMapping("/cancelDelivery")

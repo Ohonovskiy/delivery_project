@@ -22,7 +22,7 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="getLocation()">
 
 <!-- Header Start -->
 <div class="container-fluid bg-dark px-0">
@@ -113,8 +113,7 @@
                 <div class="product-square">
                     <a th:href="@{/products/{id}(id=${product.getId()})}">
                         <div class="product-image">
-                            <!--                        CHANGE IT TODO-->
-                            <img th:src="${user.getProducts().get(0).getShops().get(0).getImage()}" th:alt="${product.getName()}" class="tinted">
+                            <img th:src="${product.getImage()}" th:alt="${product.getName()}" class="tinted">
                         </div>
                     </a>
                     <div class="product-info product-actions" th:data-product-id="${product.getId()}">
@@ -143,14 +142,34 @@
     </div>
 </div>
 
+<div class="container-fluid d-flex justify-content-center align-items-center">
+    <div th:if="${!user.getProducts().isEmpty()}" class="total-price d-flex align-items-center"
+         style="margin-right: 179px; margin-top: 40px">
+        <p class="mb-0">Total Price: $<span class="price-class margin-between" id="price">0.00</span></p>
+        <div class="hover-container ml-2">
+            <span class="hover-text">Recalculates on page refresh</span>
+            <p class="hover-icon" style="margin-top: 15px; margin-left: 3px; margin-right: 3px; opacity: 40%">ⓘ</p>
+        </div>
 
-<div th:if="${!user.getProducts().isEmpty()}" class="total-price">
-    <p>Total Price: $<span class="price-class" id="price">0.00</span></p>
-    <form method="post" th:action="@{/user/placeOrder}" class="place-order-form">
-        <button class="btn btn-primary py-md-2 px-md-5 d-none d-lg-block margin-between">Place order</button>
-    </form>
+        <form method="post" th:action="@{/user/placeOrder}" class="place-order-form">
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+            <button type="submit" id="placeOrderButton"
+                    class="btn btn-primary py-md-2 px-md-5 d-none d-lg-block ml-3" style="margin-right: 100px">Place order</button>
+        </form>
+        <form method="get" th:action="@{/user/orders}" class="orders-history-form">
+            <button class="btn btn-primary py-md-2 px-md-5 d-none d-lg-block ml-3">Order history</button>
+        </form>
+    </div>
+        <div th:if="${user.getProducts().isEmpty()}" class="text-center d-flex flex-column justify-content-center align-items-center">
+            <div>
+                <h1 class="text-uppercase text-dark mb-4">You don't have any products in your cart ;(</h1>
+                <form method="get" th:action="@{/shops}" class="order-history-form">
+                    <button class="btn btn-primary py-md-2 px-md-5">Go shopping!</button>
+                </form>
+            </div>
+        </div>
 </div>
-
 <!-- Content end -->
 
 
@@ -250,6 +269,19 @@
         }
 
         document.getElementById("price").textContent = totalPrice.toFixed(2);
+</script>
+
+<script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(({ coords }) => {
+                document.getElementById("latitude").value = coords.latitude;
+                document.getElementById("longitude").value = coords.longitude;
+            });
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    }
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -74,14 +74,14 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a th:href="@{/}" class="nav-item nav-link">Home</a>
                         <a th:href="@{/about}" class="nav-item nav-link">About</a>
-                        <a th:href="@{/shops}" class="nav-item nav-link">Shops</a>
+                        <a th:href="@{/shops}" class="nav-item nav-link active">Shops</a>
                         <a th:href="@{/user/profile}" class="nav-item nav-link">Profile</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a th:href="@{/blog}" class="dropdown-item">Some 1</a>
                                 <a th:href="@{/details}" class="dropdown-item">Some 2</a>
-                                <a th:href="testimonial.html" class="dropdown-item">Some 3</a>
+                                <a th:href="@{/user/orders}" class="dropdown-item">Orders</a>
                             </div>
                         </div>
                         <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
@@ -116,8 +116,7 @@
                 <div class="product-square">
                     <a th:href="@{/products/{id}(id=${product.getId()})}">
                         <div class="product-image">
-    <!--                        CHANGE IT TODO-->
-                            <img th:src="${shop.getImage()}" th:alt="${product.getName()}" class="tinted">
+                            <img th:src="${product.getImage()}" th:alt="${product.getName()}" class="tinted">
                         </div>
                     </a>
                     <div class="product-info product-actions" th:data-product-id="${product.getId()}">

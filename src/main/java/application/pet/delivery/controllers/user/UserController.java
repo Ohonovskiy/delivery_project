@@ -10,9 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -67,8 +65,15 @@ public class UserController {
     }
 
     @PostMapping("/placeOrder")
-    public String placeOrder() {
+    public String placeOrder(
+            @RequestParam(value = "latitude", required = false) Double latitude,
+            @RequestParam(value = "longitude", required = false) Double longitude) {
         setCurrentUser();
+
+        if(latitude != null && longitude != null){
+            currentUser.setGeolocationLatitude(latitude);
+            currentUser.setGeolocationLongitude(longitude);
+        }
 
         currentUser.placeOrder(new Order());
 

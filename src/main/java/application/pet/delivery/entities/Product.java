@@ -61,6 +61,12 @@ public class Product {
     private String description;
 
     /**
+     * The photo of the product.
+     */
+    @Column(name = "product_image")
+    private String image;
+
+    /**
      * The manufacturer associated with the product.
      */
     @ManyToOne

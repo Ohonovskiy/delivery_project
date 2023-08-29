@@ -110,12 +110,14 @@
 <!-- Hero End -->
 
 <!-- Content start -->
-<div class="container">
-    <table class="product-table justify-content-evenly" style="margin-top: 50px; max-width: 1300px">
+<div class="container-fluid d-flex justify-content-center">
+    <table class="product-table" style="margin-top: 50px; max-width: 80%; min-width: 65%">
         <tr class="header-row">
             <th>Order id</th>
             <th>Products</th>
             <th>Manufacturer</th>
+            <th>Order place time</th>
+            <th>Order complete time</th>
             <th>Price</th>
             <th>Status</th>
         </tr>
@@ -131,6 +133,13 @@
                     <span th:text="${product.getManufacturer().getName()}"></span><br/>
                 </span>
             </td>
+            <td th:text="${#dates.format(order.getPlaceTime(), 'dd/MM/yy HH:mm:ss')}"></td>
+            <th:block th:if="${order.getCompleteTime() == null}">
+                <td th:text="${'Still delivering'}"></td>
+            </th:block>
+            <th:block th:unless="${order.getCompleteTime() == null}">
+                <td th:text="${#dates.format(order.getCompleteTime(), 'dd/MM/yy HH:mm:ss')}"></td>
+            </th:block>
             <td th:text="${'$' + #numbers.formatDecimal(order.getPrice(), 1, 'DEFAULT', 2, 'DEFAULT')}"></td>
             <td class="status" th:text="${order.getStatus()}"></td>
         </tr>

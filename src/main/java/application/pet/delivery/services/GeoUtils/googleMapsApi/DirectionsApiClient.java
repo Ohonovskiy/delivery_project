@@ -8,12 +8,15 @@ import application.pet.delivery.services.ShopService;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -40,7 +43,7 @@ public class DirectionsApiClient {
         return getInfo(requestUrl);
     }
 
-    public String[] getTripInfo(DeliveryMan deliveryMan, Order order) throws Exception {
+    public String[] getTripInfo(DeliveryMan deliveryMan, Order order) {
         StringBuilder wayPoints = new StringBuilder();
 
         List<Shop> shops = shopService.sortShopsByDistance(deliveryMan, order);
@@ -60,10 +63,12 @@ public class DirectionsApiClient {
                 "&destination=" + geolocationToString.userGeoToString(order.getUser()) +
                 "&key=" + API_KEY;
 
+        System.out.println(requestUrl);
+
         return getInfo(requestUrl);
     }
 
-    private String[] getInfo(String requestUrl) throws Exception {
+    private String[] getInfo(String requestUrl) {
         HttpGet httpGet = new HttpGet(requestUrl);
 
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
@@ -82,8 +87,10 @@ public class DirectionsApiClient {
                 return new String[]{startAddress, endAddress, intDistanceMeters + "", distanceKm};
 
             } else {
-                throw new RuntimeException("Can't find route...");
+                return new String[]{};
             }
+        } catch (JSONException | ParseException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

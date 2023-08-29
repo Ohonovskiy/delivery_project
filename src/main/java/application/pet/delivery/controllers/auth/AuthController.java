@@ -40,8 +40,8 @@ public class AuthController {
                                @RequestParam("role") Role role) throws ParseException {
 
         user.setBirthdayDate(new SimpleDateFormat("yyyy-MM-dd").parse(birthdayDate));
-        user.setGeolocationX(longitude);
-        user.setGeolocationY(latitude);
+        user.setGeolocationLatitude(longitude);
+        user.setGeolocationLongitude(latitude);
         user.setRole(role);
 
         if(role.equals(Role.ROLE_USER)) {

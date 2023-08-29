@@ -146,14 +146,15 @@ public class UserService {
 
     public DeliveryMan convertToDeliveryman(User user){
         DeliveryMan deliveryMan = new DeliveryMan();
+        deliveryMan.setContactInfo(user.getContactInfo());
         deliveryMan.setEmail(user.getEmail());
         deliveryMan.setPassword(user.getPassword());
         deliveryMan.setFirstName(user.getFirstName());
         deliveryMan.setLastName(user.getLastName());
         deliveryMan.setBirthdayDate(user.getBirthdayDate());
         deliveryMan.setRole(Role.ROLE_DELIVERY_MAN);
-        deliveryMan.setGeolocationX(user.getGeolocationX());
-        deliveryMan.setGeolocationY(user.getGeolocationY());
+        deliveryMan.setGeolocationX(user.getGeolocationLatitude());
+        deliveryMan.setGeolocationY(user.getGeolocationLongitude());
         deliveryMan.setStatus(user.getStatus());
 
         return deliveryMan;

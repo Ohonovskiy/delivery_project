@@ -13,9 +13,9 @@ public class GeolocationToString {
                 deliveryMan.getGeolocationX().toString().replace(',','.');
     }
     public String userGeoToString(User user){
-        return user.getGeolocationY().toString().replace(',','.')
+        return user.getGeolocationLatitude().toString().replace(',','.')
                 +','+
-                user.getGeolocationX().toString().replace(',','.');
+                user.getGeolocationLongitude().toString().replace(',','.');
     }
     public String shopGeoToString(Shop shop){
         return shop.getGeolocationY().toString().replace(',','.')

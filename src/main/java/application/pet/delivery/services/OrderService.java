@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -28,48 +26,51 @@ public class OrderService {
         this.directionsApiClient = directionsApiClient;
     }
 
-    public void save(Order order){
+    public void save(Order order) {
         orderRepository.save(order);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Order> getById(Long id){
+    public Optional<Order> getById(Long id) {
         return orderRepository.findById(id);
     }
 
     @Transactional(readOnly = true)
-    public List<Order> getAllUnsignedOrders(){
+    public List<Order> getAllUnsignedOrders() {
         return orderRepository.findAllByDeliveryManIsNullAndStatusEquals(Status.WAITING);
     }
 
     @Transactional(readOnly = true)
-    public Double calculateOrderPrice(Order order){
+    public Double calculateOrderPrice(Order order) {
         Double res = 0d;
 
-        for(Product product: order.getProducts()){
+        for (Product product : order.getProducts()) {
             res += product.getPrice();
         }
 
         return res;
     }
 
-    public void remove(Order order){
+    public void remove(Order order) {
         order.getDeliveryMan().removeOrder();
         order.getUser().getOrders().remove(order);
 
         orderRepository.delete(order);
     }
 
-    public void remove(Long id){
+    public void remove(Long id) {
         orderRepository.deleteById(id);
     }
 
-    public HashMap<Order, String> getOrderAndOrderInfoMap(DeliveryMan deliveryMan) throws Exception {
+    public HashMap<Order, String> getOrderAndOrderInfoMap(DeliveryMan deliveryMan) {
 
         HashMap<Order, String> orderOrderInfo = new HashMap<>();
 
         for(Order order : getAllUnsignedOrders()){
-            orderOrderInfo.put(order, directionsApiClient.getTripInfo(deliveryMan, order)[3]);
+            String[] info = directionsApiClient.getTripInfo(deliveryMan, order);
+            if(info.length >= 3){
+                orderOrderInfo.put(order, info[3]);
+            }
         }
 
         return orderOrderInfo;
