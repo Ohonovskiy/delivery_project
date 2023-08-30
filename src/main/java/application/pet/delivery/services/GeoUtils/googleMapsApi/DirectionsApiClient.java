@@ -63,8 +63,6 @@ public class DirectionsApiClient {
                 "&destination=" + geolocationToString.userGeoToString(order.getUser()) +
                 "&key=" + API_KEY;
 
-        System.out.println(requestUrl);
-
         return getInfo(requestUrl);
     }
 

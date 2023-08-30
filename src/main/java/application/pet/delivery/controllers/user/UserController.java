@@ -10,9 +10,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Controller class for managing user-related operations and views.
@@ -36,7 +41,7 @@ public class UserController {
 
     @GetMapping
     public String index(){
-        return "user/index";
+        return "redirect:/user/profile";
     }
 
     @GetMapping("/profile")
@@ -57,6 +62,7 @@ public class UserController {
 
         orders.forEach(o -> o.setPrice(orderService.calculateOrderPrice(o)));
 
+        orders.sort(Comparator.comparing(Order::getPlaceTime, Comparator.nullsLast(Comparator.reverseOrder())));
 
         model.addAttribute("orders", orders);
 

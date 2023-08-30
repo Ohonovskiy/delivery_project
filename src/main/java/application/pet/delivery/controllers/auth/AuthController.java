@@ -52,7 +52,7 @@ public class AuthController {
         }
 
 
-        return "redirect:/auth/success";
+        return "redirect:/auth/login?success=true";
     }
 
     @GetMapping("/login")

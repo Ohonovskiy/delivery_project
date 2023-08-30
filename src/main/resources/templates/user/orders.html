@@ -134,7 +134,7 @@
                 </span>
             </td>
             <td th:text="${#dates.format(order.getPlaceTime(), 'dd/MM/yy HH:mm:ss')}"></td>
-            <th:block th:if="${order.getCompleteTime() == null}">
+            <th:block th:if="${order.getCompleteTime() == null && order.getStatus() != 'DONE'}">
                 <td th:text="${'Still delivering'}"></td>
             </th:block>
             <th:block th:unless="${order.getCompleteTime() == null}">
