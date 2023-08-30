@@ -24,19 +24,29 @@ public class IndexController {
     @GetMapping
     public String index(Model model){
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String email = authentication.getName();
-
-        if(userService.getByEmail(email).isPresent()){
-            model.addAttribute("isAuth", true);
-            return "universal/index";
-        } else if (deliveryManService.getByEmail(email).isPresent()) {
-            return "redirect:/delivery";
-        }
-
-        model.addAttribute("isAuth", false);
+        model.addAttribute("isAuth", isAuth());
 
         return "universal/index";
+    }
+
+    @GetMapping("/about")
+    public String about(Model model){
+
+        model.addAttribute("isAuth", isAuth());
+
+        return "universal/about";
+    }
+
+    @GetMapping("/contact")
+    public String contact(Model model){
+
+        model.addAttribute("isAuth", isAuth());
+
+        return "universal/contact";
+    }
+
+    private boolean isAuth(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userService.getByEmail(authentication.getName()).isPresent() || deliveryManService.getByEmail(authentication.getName()).isPresent();
     }
 }

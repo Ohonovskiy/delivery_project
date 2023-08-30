@@ -9,33 +9,34 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="../../static/lib/flaticon/font/flaticon.css" rel="stylesheet">
+    <link href="/lib/flaticon/font/flaticon.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="../../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../../static/css/style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
 <body>
+<!-- Header Start -->
 <div class="container-fluid bg-dark px-0">
     <div class="row gx-0">
         <div class="col-lg-3 bg-dark d-none d-lg-block">
-            <a href="../universal/index.html" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
-                <h1 class="m-0 display-4 text-primary text-uppercase">Delivery</h1>
+            <a th:href="@{/}" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
+                <h1 class="m-0 display-3 text-primary text-uppercase">Delivery</h1>
             </a>
         </div>
         <div class="col-lg-9">
@@ -71,7 +72,7 @@
                 </div>
             </div>
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0 px-lg-5">
-                <a href="../universal/index.html" class="navbar-brand d-block d-lg-none">
+                <a th:href="@{/}" class="navbar-brand d-block d-lg-none">
                     <h1 class="m-0 display-4 text-primary text-uppercase">Delivery</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -79,21 +80,24 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="../universal/index.html" class="nav-item nav-link ">Home</a>
-                        <a href="about.html" class="nav-item nav-link active">About</a>
-                        <a href="../newDesign/class.html" class="nav-item nav-link">Shops</a>
-                        <a href="../newDesign/team.html" class="nav-item nav-link">Profile</a>
+                        <a th:href="@{/}" class="nav-item nav-link">Home</a>
+                        <a th:href="@{/about}" class="nav-item nav-link active">About</a>
+                        <a th:href="@{/shops}" class="nav-item nav-link">Shops</a>
+                        <a th:href="@{/user/profile}" class="nav-item nav-link">Profile</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="../newDesign/blog.html" class="dropdown-item">Some 1</a>
-                                <a href="../newDesign/detail.html" class="dropdown-item">Some 2</a>
+                                <a th:href="@{/blog}" class="dropdown-item">Some 1</a>
+                                <a th:href="@{/details}" class="dropdown-item">Some 2</a>
                                 <a th:href="@{/user/orders}" class="dropdown-item">Orders</a>
                             </div>
                         </div>
-                        <a href="../newDesign/contact.html" class="nav-item nav-link">Contact</a>
+                        <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
                     </div>
-                    <a href="" class="btn btn-primary py-md-3 px-md-5 d-none d-lg-block">Join Us</a>
+                    <div  th:if="${!isAuth}">
+                        <a th:href="@{/auth/registration}" class="btn btn-primary py-md-2 px-md-5 d-none d-lg-block margin-between">Registration</a>
+                        <a th:href="@{/auth/login}" class="btn btn-primary py-md-2 px-md-5 d-none d-lg-block margin-between">Login</a>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -107,7 +111,7 @@
     <div class="row py-5">
         <div class="col-12 text-center">
             <h1 class="display-2 text-uppercase text-white mb-md-4">About Our Delivery Service</h1>
-            <a href="../universal/index.html" class="btn btn-primary py-md-3 px-md-5 me-3">Home</a>
+            <a th:href="@{/}" class="btn btn-primary py-md-3 px-md-5 me-3">Home</a>
             <a href="#about-section" class="btn btn-light py-md-3 px-md-5">About</a>
         </div>
     </div>
@@ -152,46 +156,41 @@
 </div>
 <!-- About End -->
 
-
-
-    <!-- Programe Start -->
-    <div class="container-fluid programe position-relative px-5 mt-5" style="margin-bottom: 180px;">
-        <div class="row g-5 gb-5">
-            <div class="col-lg-4 col-md-6">
-                <div class="bg-light rounded text-center p-5">
-                    <i class="flaticon-six-pack display-1 text-primary"></i>
-                    <h3 class="text-uppercase my-4">Body Building</h3>
-                    <p>Sed amet tempor amet sit kasd sea lorem dolor ipsum elitr dolor amet kasd elitr duo vero amet amet stet</p>
-                    <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="bg-light rounded text-center p-5">
-                    <i class="flaticon-barbell display-1 text-primary"></i>
-                    <h3 class="text-uppercase my-4">Weight Lefting</h3>
-                    <p>Sed amet tempor amet sit kasd sea lorem dolor ipsum elitr dolor amet kasd elitr duo vero amet amet stet</p>
-                    <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="bg-light rounded text-center p-5">
-                    <i class="flaticon-bodybuilding display-1 text-primary"></i>
-                    <h3 class="text-uppercase my-4">Muscle Building</h3>
-                    <p>Sed amet tempor amet sit kasd sea lorem dolor ipsum elitr dolor amet kasd elitr duo vero amet amet stet</p>
-                    <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-6 text-center">
-                <h1 class="text-uppercase text-light mb-4">30% Discount For This Summer</h1>
-                <a href="" class="btn btn-primary py-3 px-5">Become A Member</a>
+<!-- Delivery Services Section -->
+<div class="container-fluid delivery-services position-relative px-5 mt-5" style="margin-bottom: 180px;">
+    <div class="row g-5 gb-5">
+        <div class="col-lg-4 col-md-6">
+            <div class="bg-light rounded text-center p-5">
+                <i class="flaticon-delivery-truck display-1 text-primary"></i>
+                <h3 class="text-uppercase my-4">Express Delivery</h3>
+                <p>Get your packages delivered quickly and efficiently. Our delivery service ensures your items reach their destination on time.</p>
             </div>
         </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="bg-light rounded text-center p-5">
+                <i class="flaticon-package display-1 text-primary"></i>
+                <h3 class="text-uppercase my-4">Parcel Shipping</h3>
+                <p>We specialize in handling parcels of all sizes. Ship your packages securely with our reliable parcel shipping services.</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="bg-light rounded text-center p-5">
+                <i class="flaticon-courier display-1 text-primary"></i>
+                <h3 class="text-uppercase my-4">Local Courier</h3>
+                <p>Need something delivered within the city? Our local courier service guarantees swift and safe deliveries within your area.</p>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-6 text-center" style="margin-bottom: -130px">
+            <h1 class="text-uppercase text-primary mb-4">Reliable Delivery Solutions</h1>
+            <a th:href="@{/user/profile}" class="btn btn-primary py-3 px-5">Request Delivery</a>
+        </div>
     </div>
-    <!-- Programe Start -->
+</div>
+<!-- Delivery Services Section -->
 
 
 <!-- Delivery Stats Start -->
-<div class="container-fluid bg-dark delivery-stats p-5 my-5">
+<div class="container-fluid bg-dark delivery-stats p-5">
     <div class="row gx-5 gy-4 py-5">
         <!-- Total Orders -->
         <div class="col-lg-3 col-md-6">
@@ -247,7 +246,7 @@
 
 
 <!-- Footer Start -->
-<div class="container-fluid bg-dark text-secondary px-5 mt-5">
+<div class="container-fluid bg-dark text-secondary px-5">
     <div class="row gx-5">
         <div class="col-lg-8 col-md-6">
             <div class="row gx-5">
@@ -276,7 +275,7 @@
                     <h4 class="text-uppercase text-light mb-4">Quick Links</h4>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="about.html"><i class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
+                        <a class="text-secondary mb-2" href="../user/about.html"><i class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Class Schedule</a>
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Our Trainers</a>
                         <a class="text-secondary mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Latest Blog</a>
@@ -317,20 +316,20 @@
 <!-- Footer End -->
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-dark py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>
+<!-- Back to Top -->
+<a href="#" class="btn btn-dark py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/lib/easing/easing.min.js"></script>
-    <script src="../../static/lib/waypoints/waypoints.min.js"></script>
-    <script src="../../static/lib/counterup/counterup.min.js"></script>
-    <script src="../../static/lib/owlcarousel/owl.carousel.min.js"></script>
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/waypoints/waypoints.min.js"></script>
+<script src="/lib/counterup/counterup.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="../../static/js/main.js"></script>
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
 </body>
 
 </html>
