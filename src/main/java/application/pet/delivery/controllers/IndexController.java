@@ -23,6 +23,8 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model){
+        if(deliveryManService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).isPresent())
+            return "delivery/index";
 
         model.addAttribute("isAuth", isAuth());
 

@@ -1,0 +1,1 @@
+Before run the application make sure You moved versions 1 and 2 migration files to folder migration.

@@ -103,7 +103,7 @@
      th:style="'background: linear-gradient(rgba(34, 36, 41, .8), rgba(34, 36, 41, .8)), url(https://images.unsplash.com/photo-1533282960533-51328aa49826?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2lkZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80) center center no-repeat; background-size: cover;'">
     <div class="row py-5">
         <div class="col-12 text-center">
-            <h1 class="display-2 text-uppercase text-white mb-md-4" th:text="${orders.get(0).getUser().getFirstName() + '&apos;'s orders'}"></h1>
+            <h1 class="display-2 text-uppercase text-white mb-md-4" th:text="${user.getFirstName() + '&apos;'s orders'}"></h1>
         </div>
     </div>
 </div>

@@ -65,6 +65,7 @@ public class UserController {
         orders.sort(Comparator.comparing(Order::getPlaceTime, Comparator.nullsLast(Comparator.reverseOrder())));
 
         model.addAttribute("orders", orders);
+        model.addAttribute("user", currentUser);
 
 
         return "user/orders";
