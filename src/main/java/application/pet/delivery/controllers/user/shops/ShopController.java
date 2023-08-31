@@ -64,7 +64,7 @@ public class ShopController {
 
         if(shopId == null) shopId = 1L;
 
-        return  "redirect:/shops/" + shopId;
+        return  "redirect:/shops/"+shopId;
     }
 
     @PostMapping("/removeProduct")
@@ -78,7 +78,7 @@ public class ShopController {
         if(shopId == null) shopId = 1L;
 
 
-        return  "redirect:/shops/" + shopId;
+        return  "redirect:/shops/"+shopId;
     }
 
     public boolean authenticationUserIsPresent(){
