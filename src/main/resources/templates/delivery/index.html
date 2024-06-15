@@ -6,7 +6,6 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB484J_o5zls0LGtwLiIKauvGgSssRZiKE"></script>
     <script th:inline="javascript">
         const markersData = /*[[ ${markersData} ]]*/ [];
     </script>
@@ -61,6 +60,6 @@
         }
     }
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB484J_o5zls0LGtwLiIKauvGgSssRZiKE&callback=initMap"></script>
+<script async defer th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapsApiKey} + '&callback=initMap'"></script>
 </body>
 </html>

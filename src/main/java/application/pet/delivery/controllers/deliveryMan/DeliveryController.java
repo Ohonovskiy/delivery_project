@@ -2,11 +2,13 @@ package application.pet.delivery.controllers.deliveryMan;
 
 import application.pet.delivery.entities.DeliveryMan;
 import application.pet.delivery.entities.Order;
+import application.pet.delivery.entities.Product;
 import application.pet.delivery.entities.googleMaps.MarkerInfo;
 import application.pet.delivery.services.DeliveryManService;
 import application.pet.delivery.services.GeoUtils.googleMapsApi.MarkerDataService;
 import application.pet.delivery.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class DeliveryController {
     private final MarkerDataService markerDataService;
     private DeliveryMan currentDeliveryMan;
 
+    @Value("${GOOGLE_MAPS_KEY}")
+    private String googleMapsApiKey;
+
     @Autowired
     public DeliveryController(OrderService orderService, DeliveryManService deliveryManService, MarkerDataService markerDataService) {
         this.orderService = orderService;
@@ -42,6 +47,7 @@ public class DeliveryController {
 
         model.addAttribute("markersData",
                 markerDataService.generateMarkersForDeliveryman(currentDeliveryMan));
+        model.addAttribute("googleMapsApiKey", googleMapsApiKey);
 
         return "delivery/index";
     }
@@ -60,10 +66,13 @@ public class DeliveryController {
     public String availableOrders(Model model) {
         setCurrentDeliveryMan();
 
-
-
-        model.addAttribute("orderAndInfo", orderService.getOrderAndOrderInfoMap(currentDeliveryMan));
-        model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
+        if(currentDeliveryMan.hasOrder())
+            model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
+         else {
+            model.addAttribute("orderAndInfo", orderService.getOrderAndOrderInfoMap(currentDeliveryMan));
+            model.addAttribute("hasOrder", currentDeliveryMan.hasOrder());
+            System.out.println(orderService.getOrderAndOrderInfoMap(currentDeliveryMan).size());
+        }
 
         return "delivery/orders";
     }

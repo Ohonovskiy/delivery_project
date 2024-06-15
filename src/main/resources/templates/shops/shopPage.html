@@ -23,6 +23,8 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -127,14 +129,14 @@
                         <h5 th:text="${'$'+product.getPrice()}"></h5>
                         <th:block th:if="${user}">
                             <th:block th:if="${user.getProducts().contains(product)}">
-                                <form class="remove-from-cart-form" th:method="POST" th:action="@{/shops/removeProduct}">
+                                <form class="cart-form" th:method="POST" th:action="@{/shops/removeProduct}">
                                     <input type="hidden" name="productId" th:value="${product.getId()}">
                                     <input type="hidden" name="shopId" th:value="${shop.getId()}">
                                     <button type="submit" class="btn btn-danger">Remove from Cart</button>
                                 </form>
                             </th:block>
                             <th:block th:unless="${user.getProducts().contains(product)}">
-                                <form class="add-to-cart-form" th:method="POST" th:action="@{/shops/addProduct}">
+                                <form class="cart-form" th:method="POST" th:action="@{/shops/addProduct}">
                                     <input type="hidden" name="productId" th:value="${product.getId()}">
                                     <input type="hidden" name="shopId" th:value="${shop.getId()}">
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
@@ -237,35 +239,6 @@
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $(document).on("submit", ".add-to-cart-form, .remove-from-cart-form", function(event) {
-            event.preventDefault();
-
-            const $form = $(this);
-            const productId = $form.closest(".product-actions").data("product-id");
-
-            $.ajax({
-                type: "POST",
-                url: $form.attr("action"),
-                data: $form.serialize(),
-                success: function(response) {
-                    const parsedResponse = $(response);
-                    const productActionsContainer = parsedResponse.find(".product-actions[data-product-id='" + productId + "']");
-
-                    console.log(productActionsContainer);
-
-                    $(".product-actions[data-product-id='" + productId + "']").replaceWith(productActionsContainer);
-                },
-                error: function(error) {
-                    console.error("Error:", error);
-                }
-            });
-        });
-    });
-</script>
 
 
 </body>

@@ -11,6 +11,7 @@ import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -21,7 +22,8 @@ import java.util.List;
 
 @Component
 public class DirectionsApiClient {
-    private static final String API_KEY = "AIzaSyB484J_o5zls0LGtwLiIKauvGgSssRZiKE";
+    @Value("${GOOGLE_MAPS_KEY}")
+    private String API_KEY;
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/directions/json";
     private static final GeolocationToString geolocationToString = new GeolocationToString();
     private static final AddressRearranger addressRearranger = new AddressRearranger();

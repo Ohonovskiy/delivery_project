@@ -35,9 +35,11 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id_fk")
+    @ToString.Exclude
     private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
     @JoinTable(
             name = "order_product",
             joinColumns = @JoinColumn(name = "order_id_fk"),
