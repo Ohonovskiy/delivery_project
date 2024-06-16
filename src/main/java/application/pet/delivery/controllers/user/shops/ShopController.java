@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/shops")
-@PreAuthorize("hasAuthority('user')")
+//@PreAuthorize("hasAuthority('user')")
 public class ShopController {
     private final ShopService shopService;
     private final ProductService productService;

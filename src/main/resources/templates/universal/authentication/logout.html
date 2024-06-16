@@ -6,9 +6,11 @@
     <title>Logout</title>
 </head>
 <body>
-<div th:insert="~{frames/headerFrame :: header}"></div>
+<div th:insert="~{fragments/header :: header}"></div>
 <form th:action="@{/auth/logout}" method="post">
     <button type="submit">Logout</button>
 </form>
+
+<footer th:insert="~{fragments/footer.html :: footer}" style="z-index: 10"> </footer>
 </body>
 </html>

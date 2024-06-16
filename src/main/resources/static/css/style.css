@@ -346,3 +346,7 @@ h6,
         background: var(--primary);
     }
 }
+
+.d-none {
+    display: none; !important;
+}

@@ -6,6 +6,7 @@ import application.pet.delivery.security.passwordEncoders.NoEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -47,27 +48,28 @@ public class SpringConfig {
      */
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers(
-                                        "/auth/**",
-                                        "/css/**",
-                                        "/images/**",
-                                        "/img/**",
-                                        "/lib/**",
-                                        "/js/**",
-                                        "/scss/**",
-                                        "*").permitAll()
-                                .anyRequest().authenticated())
+        return http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers(HttpMethod.POST).authenticated()
+                        .requestMatchers(
+                                "/auth/**",
+                                "/css/**",
+                                "/images/**",
+                                "/img/**",
+                                "/lib/**",
+                                "/js/**",
+                                "/scss/**").permitAll()  // Permit all static resources
+                        .anyRequest().authenticated())  // Require authentication for any other requests
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement(ses ->
-                        ses.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                                .sessionFixation().migrateSession()
-                                .invalidSessionUrl("/auth/login")
-                                .maximumSessions(1)
-                                .expiredUrl("/auth/login?expired=true"))
-                .formLogin(form -> form.loginPage("/auth/login")
+                .sessionManagement(ses -> ses
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .sessionFixation().migrateSession()
+                        .invalidSessionUrl("/auth/login")
+                        .maximumSessions(1)
+                        .expiredUrl("/auth/login?expired=true"))
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
                         .permitAll()
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/auth/login?error=true"))
@@ -77,9 +79,9 @@ public class SpringConfig {
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/auth/login"))
-                .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
-                        httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/denied")
-                                .accessDeniedHandler(new CustomAccessDeniedHandler()))
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
+                        .accessDeniedPage("/denied")
+                        .accessDeniedHandler(new CustomAccessDeniedHandler()))
                 .authenticationProvider(daoAuthenticationProvider())
                 .build();
     }

@@ -1,18 +1,15 @@
 <header th:fragment="header">
     <nav class="myapp-header-navbar myapp-header-navbar-light myapp-header-bg-light">
-        <a class="myapp-header-brand" th:href="@{/}">
+        <a class="myapp-header-brand" th:href="@{/delivery}">
             <img th:src="@{/images/logo.png}" width="65" height="65" class="d-inline-block align-top" alt="">
         </a>
         <div class="myapp-header-collapse" id="navbarNav">
             <ul class="myapp-header-nav myapp-header-nav-right">
                 <li class="myapp-header-nav-item">
-                    <a class="myapp-header-nav-link" th:href="@{/shops}">Shops</a>
+                    <a class="myapp-header-nav-link" th:href="@{/delivery/availableOrders}">Available orders</a>
                 </li>
                 <li class="myapp-header-nav-item">
-                    <a class="myapp-header-nav-link" th:href="@{/user/orders}">Orders</a>
-                </li>
-                <li class="myapp-header-nav-item">
-                    <a class="myapp-header-nav-link" th:href="@{/user/profile}">Profile</a>
+                    <a class="myapp-header-nav-link" th:href="@{/delivery/profile}">Profile (later)</a>
                 </li>
             </ul>
             <hr>

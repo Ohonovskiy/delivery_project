@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<div th:insert="~{frames/headerFrame :: header}"></div>
+<div th:insert="~{fragments/header :: header}"></div>
 
 <a th:text="${'Your welcome, ' + name + '!'}"></a>
 </body>
