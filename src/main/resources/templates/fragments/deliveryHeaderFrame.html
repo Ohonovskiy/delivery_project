@@ -1,18 +1,59 @@
-<header th:fragment="header">
-    <nav class="myapp-header-navbar myapp-header-navbar-light myapp-header-bg-light">
-        <a class="myapp-header-brand" th:href="@{/delivery}">
-            <img th:src="@{/images/logo.png}" width="65" height="65" class="d-inline-block align-top" alt="">
-        </a>
-        <div class="myapp-header-collapse" id="navbarNav">
-            <ul class="myapp-header-nav myapp-header-nav-right">
-                <li class="myapp-header-nav-item">
-                    <a class="myapp-header-nav-link" th:href="@{/delivery/availableOrders}">Available orders</a>
-                </li>
-                <li class="myapp-header-nav-item">
-                    <a class="myapp-header-nav-link" th:href="@{/delivery/profile}">Profile (later)</a>
-                </li>
-            </ul>
-            <hr>
+<header>
+    <div class="container-fluid bg-dark px-0">
+        <div class="row gx-0">
+            <div class="col-lg-3 bg-dark d-none d-lg-block">
+                <a th:href="@{/delivery}" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
+                    <h1 class="m-0 display-3 text-primary text-uppercase">Delivery</h1>
+                </a>
+            </div>
+            <div class="col-lg-9">
+                <div class="row gx-0 bg-secondary d-none d-lg-flex">
+                    <div class="col-lg-7 px-5 text-start">
+                        <div class="h-100 d-inline-flex align-items-center py-2 me-4">
+                            <i class="fa fa-envelope text-primary me-2"></i>
+                            <h6 class="mb-0">delivery@gmail.com</h6>
+                        </div>
+                        <div class="h-100 d-inline-flex align-items-center py-2">
+                            <i class="fa fa-phone-alt text-primary me-2"></i>
+                            <h6 class="mb-0">+066 997 4349</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 px-5 text-end">
+                        <div class="d-inline-flex align-items-center py-2">
+                            <a class="btn btn-light btn-square rounded-circle me-2" href="https://facebook.com">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a class="btn btn-light btn-square rounded-circle me-2" href="https://twitter.com">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a class="btn btn-light btn-square rounded-circle me-2" href="https://linkedin.com">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a class="btn btn-light btn-square rounded-circle me-2" href="https://instagram.com">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a class="btn btn-light btn-square rounded-circle" href="https://youtube.com">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0 px-lg-5">
+                    <a th:href="@{/delivery}" class="navbar-brand d-block d-lg-none">
+                        <h1 class="m-0 display-4 text-primary text-uppercase">Delivery</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a th:href="@{/delivery}" th:classappend="${#ctx.springRequestContext.requestUri == '/delivery'} ? ' active'" class="nav-item nav-link">Home</a>
+                            <a th:href="@{/delivery/profile}" th:classappend="${#ctx.springRequestContext.requestUri == '/delivery/profile'} ? ' active'" class="nav-item nav-link">Profile</a>
+                            <a th:href="@{/delivery/availableOrders}" th:classappend="${#ctx.springRequestContext.requestUri == '/delivery/availableOrders'} ? ' active'" class="nav-item nav-link">Orders</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
-    </nav>
+    </div>
 </header>
